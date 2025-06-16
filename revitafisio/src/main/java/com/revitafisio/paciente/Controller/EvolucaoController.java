@@ -1,8 +1,8 @@
 package com.revitafisio.paciente.Controller;
 
 import com.revitafisio.paciente.service.EvolucaoService;
-import com.revitafisio.records.CriarEvolucaoRequest;
-import com.revitafisio.records.EvolucaoResponse;
+import com.revitafisio.funcionario.dto.CriarEvolucaoRequest;
+import com.revitafisio.paciente.dto.EvolucaoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

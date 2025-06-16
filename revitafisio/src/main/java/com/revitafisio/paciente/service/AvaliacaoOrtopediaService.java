@@ -1,10 +1,10 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.AvaliacaoOrtopedia;
-import com.revitafisio.records.AvaliacaoOrtopediaRequest;
-import com.revitafisio.repository.AvaliacaoOrtopediaRepository;
-import com.revitafisio.repository.FuncionarioRepository;
-import com.revitafisio.repository.PacienteRepository;
+import com.revitafisio.paciente.dto.AvaliacaoOrtopediaRequest;
+import com.revitafisio.paciente.repository.AvaliacaoOrtopediaRepository;
+import com.revitafisio.funcionario.repository.FuncionarioRepository;
+import com.revitafisio.paciente.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

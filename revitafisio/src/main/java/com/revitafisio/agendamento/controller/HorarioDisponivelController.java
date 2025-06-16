@@ -1,7 +1,7 @@
 package com.revitafisio.agendamento.controller;
 
 import com.revitafisio.agendamento.service.HorarioDisponivelService;
-import com.revitafisio.records.HorarioDisponivelResponse;
+import com.revitafisio.funcionario.repository.HorarioDisponivelResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

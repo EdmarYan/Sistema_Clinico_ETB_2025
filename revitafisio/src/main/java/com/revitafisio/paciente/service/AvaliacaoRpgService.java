@@ -1,10 +1,10 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.AvaliacaoRpg;
-import com.revitafisio.records.AvaliacaoRpgRequest;
-import com.revitafisio.repository.AvaliacaoRpgRepository;
-import com.revitafisio.repository.FuncionarioRepository;
-import com.revitafisio.repository.PacienteRepository;
+import com.revitafisio.paciente.dto.AvaliacaoRpgRequest;
+import com.revitafisio.paciente.repository.AvaliacaoRpgRepository;
+import com.revitafisio.funcionario.repository.FuncionarioRepository;
+import com.revitafisio.paciente.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

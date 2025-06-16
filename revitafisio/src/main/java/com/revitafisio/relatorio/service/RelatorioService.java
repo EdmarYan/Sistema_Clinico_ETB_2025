@@ -1,7 +1,7 @@
 package com.revitafisio.relatorio.service;
 
-import com.revitafisio.records.RelatorioAtendimentoResponse;
-import com.revitafisio.repository.AgendamentoRepository;
+import com.revitafisio.funcionario.dto.RelatorioAtendimentoResponse;
+import com.revitafisio.agendamento.repository.AgendamentoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

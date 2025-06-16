@@ -1,11 +1,10 @@
 package com.revitafisio.funcionario.controller;
 
-import com.revitafisio.entities.usuarios.Fisioterapeuta;
 import com.revitafisio.funcionario.service.FuncionarioService;
-import com.revitafisio.records.AtualizarFuncionarioRequest;
-import com.revitafisio.records.CriarFuncionarioRequest;
-import com.revitafisio.records.FuncionarioDetalhesResponse;
-import com.revitafisio.records.FuncionarioResponse;
+import com.revitafisio.funcionario.dto.AtualizarFuncionarioRequest;
+import com.revitafisio.funcionario.dto.CriarFuncionarioRequest;
+import com.revitafisio.funcionario.dto.FuncionarioDetalhesResponse;
+import com.revitafisio.funcionario.dto.FuncionarioResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

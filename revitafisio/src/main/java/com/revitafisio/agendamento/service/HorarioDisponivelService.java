@@ -1,7 +1,7 @@
 package com.revitafisio.agendamento.service;
 
-import com.revitafisio.records.HorarioDisponivelResponse;
-import com.revitafisio.repository.HorarioDisponivelRepository;
+import com.revitafisio.funcionario.repository.HorarioDisponivelResponse;
+import com.revitafisio.agendamento.repository.HorarioDisponivelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

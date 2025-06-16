@@ -2,7 +2,7 @@ package com.revitafisio.paciente.Controller;
 
 import com.revitafisio.entities.paciente.AvaliacaoOrtopedia;
 import com.revitafisio.paciente.service.AvaliacaoOrtopediaService;
-import com.revitafisio.records.AvaliacaoOrtopediaRequest;
+import com.revitafisio.paciente.dto.AvaliacaoOrtopediaRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

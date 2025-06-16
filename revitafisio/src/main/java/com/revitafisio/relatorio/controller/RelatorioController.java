@@ -1,6 +1,6 @@
 package com.revitafisio.relatorio.controller;
 
-import com.revitafisio.records.RelatorioAtendimentoResponse;
+import com.revitafisio.funcionario.dto.RelatorioAtendimentoResponse;
 import com.revitafisio.relatorio.service.RelatorioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

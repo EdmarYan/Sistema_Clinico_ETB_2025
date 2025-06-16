@@ -1,10 +1,14 @@
 package com.revitafisio.agendamento.service;
 
+import com.revitafisio.agendamento.repository.AgendamentoRepository;
+import com.revitafisio.agendamento.repository.HorarioDisponivelRepository;
 import com.revitafisio.entities.agendamentos.Agendamento;
 import com.revitafisio.entities.agendamentos.HorarioDisponivel;
-import com.revitafisio.records.AgendamentoResponse;
-import com.revitafisio.records.CriarAgendamentoRequest;
-import com.revitafisio.repository.*;
+import com.revitafisio.entities.usuarios.repository.UsuarioRepository;
+import com.revitafisio.funcionario.dto.AgendamentoResponse;
+import com.revitafisio.funcionario.repository.EspecialidadeRepository;
+import com.revitafisio.paciente.repository.PacienteRepository;
+import com.revitafisio.agendamento.dto.CriarAgendamentoRequest;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

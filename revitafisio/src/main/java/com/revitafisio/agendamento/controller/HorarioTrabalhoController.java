@@ -1,8 +1,8 @@
 package com.revitafisio.agendamento.controller;
 
 import com.revitafisio.agendamento.service.HorarioTrabalhoService;
-import com.revitafisio.records.HorarioTrabalhoRequest;
-import com.revitafisio.records.HorarioTrabalhoResponse;
+import com.revitafisio.agendamento.dto.HorarioTrabalhoRequest;
+import com.revitafisio.agendamento.dto.HorarioTrabalhoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

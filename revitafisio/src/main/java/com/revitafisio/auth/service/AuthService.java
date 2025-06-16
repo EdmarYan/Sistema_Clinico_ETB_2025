@@ -3,7 +3,7 @@ package com.revitafisio.auth.service;
 import com.revitafisio.auth.dto.AuthRequest;
 import com.revitafisio.auth.dto.AuthResponse;
 import com.revitafisio.entities.usuarios.Paciente; // Importamos a classe Paciente para a verificação
-import com.revitafisio.repository.UsuarioRepository;
+import com.revitafisio.entities.usuarios.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 @Service

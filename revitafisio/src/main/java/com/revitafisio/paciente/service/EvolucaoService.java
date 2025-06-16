@@ -1,11 +1,11 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.Evolucao;
-import com.revitafisio.records.CriarEvolucaoRequest;
-import com.revitafisio.records.EvolucaoResponse;
-import com.revitafisio.repository.EvolucaoRepository;
-import com.revitafisio.repository.FuncionarioRepository;
-import com.revitafisio.repository.PacienteRepository;
+import com.revitafisio.funcionario.dto.CriarEvolucaoRequest;
+import com.revitafisio.paciente.dto.EvolucaoResponse;
+import com.revitafisio.paciente.repository.EvolucaoRepository;
+import com.revitafisio.funcionario.repository.FuncionarioRepository;
+import com.revitafisio.paciente.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

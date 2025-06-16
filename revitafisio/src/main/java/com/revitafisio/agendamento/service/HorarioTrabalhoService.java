@@ -2,11 +2,11 @@ package com.revitafisio.agendamento.service;
 
 import com.revitafisio.entities.agendamentos.HorarioDisponivel;
 import com.revitafisio.entities.agendamentos.HorarioTrabalho;
-import com.revitafisio.records.HorarioTrabalhoRequest;
-import com.revitafisio.records.HorarioTrabalhoResponse;
-import com.revitafisio.repository.FuncionarioRepository;
-import com.revitafisio.repository.HorarioDisponivelRepository;
-import com.revitafisio.repository.HorarioTrabalhoRepository;
+import com.revitafisio.agendamento.dto.HorarioTrabalhoRequest;
+import com.revitafisio.agendamento.dto.HorarioTrabalhoResponse;
+import com.revitafisio.funcionario.repository.FuncionarioRepository;
+import com.revitafisio.agendamento.repository.HorarioDisponivelRepository;
+import com.revitafisio.agendamento.repository.HorarioTrabalhoRepository;
 import org.slf4j.Logger; // Import do Logger
 import org.slf4j.LoggerFactory; // Import do Logger
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package com.revitafisio.paciente.Controller;
 
-import com.revitafisio.records.AtualizarPacienteRequest;   // Import do novo DTO
-import com.revitafisio.records.CriarPacienteRequest;
-import com.revitafisio.records.PacienteDetalhesResponse; // Import do novo DTO
-import com.revitafisio.records.PacienteResponse;
+import com.revitafisio.paciente.dto.AtualizarPacienteRequest;   // Import do novo DTO
+import com.revitafisio.funcionario.dto.CriarPacienteRequest;
+import com.revitafisio.paciente.dto.PacienteDetalhesResponse; // Import do novo DTO
+import com.revitafisio.paciente.dto.PacienteResponse;
 import com.revitafisio.paciente.service.PacienteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

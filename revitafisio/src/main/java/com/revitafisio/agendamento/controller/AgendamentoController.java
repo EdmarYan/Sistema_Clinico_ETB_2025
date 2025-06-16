@@ -1,8 +1,8 @@
 package com.revitafisio.agendamento.controller;
 
-import com.revitafisio.records.AgendamentoResponse;
-import com.revitafisio.records.AtualizarStatusRequest;
-import com.revitafisio.records.CriarAgendamentoRequest;
+import com.revitafisio.funcionario.dto.AgendamentoResponse;
+import com.revitafisio.funcionario.dto.AtualizarStatusRequest;
+import com.revitafisio.agendamento.dto.CriarAgendamentoRequest;
 import com.revitafisio.agendamento.service.AgendamentoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

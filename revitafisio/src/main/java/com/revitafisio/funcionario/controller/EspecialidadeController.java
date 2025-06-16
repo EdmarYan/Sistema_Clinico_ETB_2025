@@ -1,7 +1,7 @@
 package com.revitafisio.funcionario.controller;
 
 import com.revitafisio.entities.usuarios.Especialidade;
-import com.revitafisio.repository.EspecialidadeRepository;
+import com.revitafisio.funcionario.repository.EspecialidadeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

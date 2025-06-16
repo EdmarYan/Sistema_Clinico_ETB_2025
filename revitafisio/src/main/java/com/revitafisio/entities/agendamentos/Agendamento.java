@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity // <-- MUDANÇA AQUI: Removido (name = "agendamentos")
+@Entity
 @Table(name = "agendamentos")
 public class Agendamento {
 

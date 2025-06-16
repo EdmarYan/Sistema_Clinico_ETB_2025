@@ -2,13 +2,13 @@ package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.usuarios.Contato;
 import com.revitafisio.entities.usuarios.Paciente;
-import com.revitafisio.repository.PacienteRepository;
-import com.revitafisio.records.AtualizarPacienteRequest;    // Import do novo DTO
-import com.revitafisio.records.CriarContatoRequest;
-import com.revitafisio.records.CriarPacienteRequest;
-import com.revitafisio.records.PacienteDetalhesResponse;  // Import do novo DTO
-import com.revitafisio.records.PacienteResponse;
-import com.revitafisio.repository.UsuarioRepository;
+import com.revitafisio.paciente.repository.PacienteRepository;
+import com.revitafisio.paciente.dto.AtualizarPacienteRequest;    // Import do novo DTO
+import com.revitafisio.funcionario.dto.CriarContatoRequest;
+import com.revitafisio.funcionario.dto.CriarPacienteRequest;
+import com.revitafisio.paciente.dto.PacienteDetalhesResponse;  // Import do novo DTO
+import com.revitafisio.paciente.dto.PacienteResponse;
+import com.revitafisio.entities.usuarios.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
