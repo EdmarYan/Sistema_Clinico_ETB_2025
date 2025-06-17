@@ -6,6 +6,7 @@ package com.revitafisio.funcionario.dto;
 public record FuncionarioResponse(
         Integer id,
         String nome,
-        String tipo // Para sabermos se é FISIOTERAPEUTA, ADMIN, etc.
+        String tipo,
+        boolean ativo
 ) {
 }

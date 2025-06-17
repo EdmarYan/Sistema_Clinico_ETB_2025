@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface AgendamentoRepository extends JpaRepository<Agendamento, Integer> {
+public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
 
     /**
      * metodo de consulta derivado pelo Spring Data JPA.

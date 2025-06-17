@@ -5,7 +5,7 @@ import com.revitafisio.agendamento.repository.HorarioDisponivelRepository;
 import com.revitafisio.entities.agendamentos.Agendamento;
 import com.revitafisio.entities.agendamentos.HorarioDisponivel;
 import com.revitafisio.entities.usuarios.repository.UsuarioRepository;
-import com.revitafisio.funcionario.dto.AgendamentoResponse;
+import com.revitafisio.agendamento.dto.AgendamentoResponse;
 import com.revitafisio.funcionario.repository.EspecialidadeRepository;
 import com.revitafisio.paciente.repository.PacienteRepository;
 import com.revitafisio.agendamento.dto.CriarAgendamentoRequest;
@@ -77,8 +77,11 @@ public class AgendamentoService {
 
     @Transactional(readOnly = true)
     public List<AgendamentoResponse> buscarAgenda(Integer idFisioterapeuta, LocalDateTime inicio, LocalDateTime fim) {
-        return agendamentoRepository.findByFisioterapeuta_IdUsuarioAndDataHoraInicioGreaterThanEqualAndDataHoraFimLessThanEqual(idFisioterapeuta, inicio, fim)
-                .stream().map(AgendamentoResponse::new).collect(Collectors.toList());
+        return agendamentoRepository
+                .findByFisioterapeuta_IdUsuarioAndDataHoraInicioGreaterThanEqualAndDataHoraFimLessThanEqual(idFisioterapeuta, inicio, fim)
+                .stream() // Garanta que o .stream() e o .map() estão aqui
+                .map(AgendamentoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -90,7 +93,7 @@ public class AgendamentoService {
     }
 
     @Transactional
-    public void atualizarStatus(Integer agendamentoId, String novoStatusStr) {
+    public void atualizarStatus(Long agendamentoId, String novoStatusStr) {
         Agendamento.StatusAgendamento novoStatus = Agendamento.StatusAgendamento.valueOf(novoStatusStr.toUpperCase());
         var agendamento = agendamentoRepository.findById(agendamentoId)
                 .orElseThrow(() -> new RuntimeException("Agendamento não encontrado."));

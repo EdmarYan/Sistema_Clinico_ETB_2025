@@ -77,13 +77,12 @@
                             <div class="card shadow mb-4" id="card-evolucao-form">
                                 <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Adicionar Evolução</h6></div>
                                 <div class="card-body">
-                                    <form id="formNovaEvolucao">
-                                        <div class="mb-3">
-                                            <label for="descricaoEvolucao" class="form-label">Nova Anotação de Evolução</label>
-                                            <textarea id="descricaoEvolucao" class="form-control" rows="10" placeholder="Descreva o progresso do paciente, técnicas aplicadas, etc." required></textarea>
+                                    <form id="evolucaoForm">
+                                        <div class="form-group">
+                                            <label for="evolucaoText">Nova Evolução</label>
+                                            <textarea class="form-control" name="descricao" id="evolucaoText" rows="4"></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Salvar Evolução</button>
-                                        <div id="resultadoEvolucao" class="mt-2"></div>
                                     </form>
                                 </div>
                             </div>

@@ -1,11 +1,13 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.Evolucao;
+import com.revitafisio.entities.usuarios.Paciente;
 import com.revitafisio.funcionario.dto.CriarEvolucaoRequest;
 import com.revitafisio.paciente.dto.EvolucaoResponse;
 import com.revitafisio.paciente.repository.EvolucaoRepository;
 import com.revitafisio.funcionario.repository.FuncionarioRepository;
 import com.revitafisio.paciente.repository.PacienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,18 +30,29 @@ public class EvolucaoService {
 
     @Transactional
     public EvolucaoResponse salvarEvolucao(CriarEvolucaoRequest request) {
-        var paciente = pacienteRepository.findById(request.idPaciente())
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado."));
+        // Validação do paciente
+        Paciente paciente = pacienteRepository.findById(request.idPaciente())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado."));
 
-        var fisioterapeuta = funcionarioRepository.findFuncionarioById(request.idFisioterapeuta())
-                .orElseThrow(() -> new RuntimeException("Fisioterapeuta não encontrado."));
+        if (!paciente.isAtivo()) {
+            throw new IllegalStateException("Não é possível salvar evolução para um paciente inativo.");
+        }
+
+        // Validação do fisioterapeuta
+        var fisioterapeuta = funcionarioRepository.findById(request.idFisioterapeuta())
+                .orElseThrow(() -> new EntityNotFoundException("Fisioterapeuta não encontrado."));
+
+        // Validação de campo obrigatório
+        if (request.descricao() == null || request.descricao().isBlank()) {
+            throw new IllegalArgumentException("Descrição da evolução é obrigatória.");
+        }
 
         var evolucao = new Evolucao();
         evolucao.setPaciente(paciente);
         evolucao.setFisioterapeuta(fisioterapeuta);
         evolucao.setDescricao(request.descricao());
-        evolucao.setData(LocalDate.now()); // Pega a data atual
-        evolucao.setPreenchida(true); // Marca como preenchida
+        evolucao.setData(LocalDate.now());
+        evolucao.setPreenchida(true);
 
         var evolucaoSalva = evolucaoRepository.save(evolucao);
 

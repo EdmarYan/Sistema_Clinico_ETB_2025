@@ -107,7 +107,25 @@ public class FuncionarioService {
         return new FuncionarioResponse(
                 usuario.getIdUsuario(),
                 usuario.getNome(),
-                tipo
+                tipo,
+                usuario.isAtivo()
         );
+    }
+    public List<FuncionarioResponse> listarAtivos() {
+        return funcionarioRepository.findAllFuncionariosAtivos().stream()
+                .map(this::toFuncionarioResponse)  // Reutiliza o mapper
+                .collect(Collectors.toList());
+    }
+
+    public List<FuncionarioResponse> listarInativos() {
+        return funcionarioRepository.findAllFuncionariosInativos().stream()
+                .map(this::toFuncionarioResponse)  // Reutiliza o mapper
+                .collect(Collectors.toList());
+    }
+    public List<FuncionarioResponse> buscarPorStatus(Boolean ativo) {
+        if (ativo == null) {
+            return buscarTodos();
+        }
+        return ativo ? listarAtivos() : listarInativos();
     }
 }

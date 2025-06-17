@@ -17,5 +17,9 @@ public interface HorarioDisponivelRepository extends JpaRepository<HorarioDispon
     void deleteByFisioterapeutaIdUsuarioAndDataBetween(Integer idFisioterapeuta, LocalDate dataInicio, LocalDate dataFim);
 
     // Metodo que busca por um slot específico (usado na criação do agendamento)
-    List<HorarioDisponivel> findByFisioterapeutaIdUsuarioAndDataAndHoraInicio(Integer idFisioterapeuta, LocalDate data, LocalTime horaInicio);
+    List<HorarioDisponivel> findByFisioterapeutaIdUsuarioAndDataAndHoraInicio(
+            Integer idFisioterapeuta,
+            LocalDate data,
+            LocalTime horaInicio
+    );
 }

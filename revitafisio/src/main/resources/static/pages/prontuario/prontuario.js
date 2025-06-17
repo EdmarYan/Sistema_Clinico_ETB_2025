@@ -222,25 +222,48 @@ async function carregarEvolucoes(idPaciente) {
     } catch (error) { historicoDiv.innerHTML = `<p class="text-danger text-center">Falha ao carregar o histórico.</p>`; }
 }
 
-async function salvarEvolucao(event, idPaciente) {
-    event.preventDefault();
-    const resultadoDiv = document.getElementById('resultadoEvolucao');
-    const descricao = document.getElementById('descricaoEvolucao').value;
-    resultadoDiv.innerHTML = '';
-    if (!usuarioLogado || !usuarioLogado.tipoUsuario.includes('FISIOTERAPEUTA')) return;
-    const requestBody = { idPaciente, idFisioterapeuta: usuarioLogado.usuarioId, descricao };
+async function salvarEvolucao(event) {
+    event.preventDefault(); // Previne o recarregamento da página
+
+    const form = document.getElementById('evolucaoForm');
+    const descricao = form.querySelector('textarea[name="descricao"]').value;
+    const pacienteId = new URLSearchParams(window.location.search).get('pacienteId');
+    const dadosUsuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+
+    if (!descricao) {
+        alert('Por favor, preencha a descrição da evolução.');
+        return;
+    }
+
+    const requestBody = {
+        idPaciente: pacienteId,
+        idFisioterapeuta: dadosUsuario.usuarioId,
+        descricao: descricao
+    };
+
     try {
         const response = await fetch('/evolucoes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
         });
-        if (!response.ok) throw new Error('Falha ao salvar.');
-        document.getElementById('descricaoEvolucao').value = '';
-        resultadoDiv.innerHTML = '<div class="alert alert-success">Evolução salva!</div>';
-        setTimeout(() => resultadoDiv.innerHTML = '', 3000);
-        carregarEvolucoes(idPaciente);
+
+        // Se a resposta do servidor não for "OK" (ex: status 500, 400, etc.)
+        if (!response.ok) {
+            // Tentamos ler a mensagem de erro que o backend enviou no corpo do JSON
+            const errorData = await response.json();
+            // Lançamos um novo erro com a mensagem específica do backend
+            throw new Error(errorData.message || 'Ocorreu uma falha ao salvar a evolução.');
+        }
+
+        // Se tudo deu certo, limpa o formulário e recarrega a lista de evoluções
+        form.reset();
+        carregarEvolucoes(pacienteId);
+
     } catch (error) {
-        resultadoDiv.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+        // ## A MÁGICA ACONTECE AQUI ##
+        // O erro lançado no "try" é capturado aqui, e nós exibimos a mensagem dele.
+        console.error('Erro ao salvar evolução:', error);
+        alert(`Erro: ${error.message}`); // Exibe um alerta com a mensagem: "Não é possível salvar evolução para um paciente inativo."
     }
 }

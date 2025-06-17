@@ -45,7 +45,27 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioAtualizado);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}/especialidades")
+    public ResponseEntity<FuncionarioDetalhesResponse> atualizarEspecialidades(@PathVariable Integer id, @RequestBody List<Integer> idEspecialidades) {
+        var fisioAtualizado = funcionarioService.atualizarEspecialidades(id, idEspecialidades);
+        return ResponseEntity.ok(FuncionarioDetalhesResponse.from(fisioAtualizado));
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<FuncionarioResponse>> listarFuncionariosAtivos() {
+        var funcionarios = funcionarioService.listarAtivos();
+        return ResponseEntity.ok(funcionarios);
+    }
+
+    @GetMapping("/inativos")
+    public ResponseEntity<List<FuncionarioResponse>> listarFuncionariosInativos() {
+        var funcionarios = funcionarioService.listarInativos();
+        return ResponseEntity.ok(funcionarios);
+    }
+
+    // ## ADICIONADO: Endpoints para ativar e inativar funcionários ##
+
+    @PatchMapping("/{id}/inativar")
     public ResponseEntity<Void> inativarFuncionario(@PathVariable Integer id) {
         funcionarioService.inativarFuncionario(id);
         return ResponseEntity.noContent().build();
@@ -55,11 +75,5 @@ public class FuncionarioController {
     public ResponseEntity<Void> ativarFuncionario(@PathVariable Integer id) {
         funcionarioService.ativarFuncionario(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{id}/especialidades")
-    public ResponseEntity<FuncionarioDetalhesResponse> atualizarEspecialidades(@PathVariable Integer id, @RequestBody List<Integer> idEspecialidades) {
-        var fisioAtualizado = funcionarioService.atualizarEspecialidades(id, idEspecialidades);
-        return ResponseEntity.ok(FuncionarioDetalhesResponse.from(fisioAtualizado));
     }
 }

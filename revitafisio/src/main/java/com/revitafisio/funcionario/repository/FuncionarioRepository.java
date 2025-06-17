@@ -25,4 +25,17 @@ public interface FuncionarioRepository extends JpaRepository<Usuario, Integer> {
      */
     @Query("SELECT u FROM Usuario u WHERE u.idUsuario = :id AND TYPE(u) != Paciente")
     Optional<Usuario> findFuncionarioById(Integer id);
+
+    /**
+     * Query para filtrar por tipo de entidade em uma hierarquia de herança.
+     * Em vez de "u.tipo_usuario", usamos "TYPE(u) <> Paciente".
+     */
+    @Query("SELECT u FROM Usuario u WHERE TYPE(u) <> Paciente AND u.ativo = true")
+    List<Usuario> findAllFuncionariosAtivos();
+
+    /**
+     * CORREÇÃO: Aplicada a mesma lógica para buscar os inativos.
+     */
+    @Query("SELECT u FROM Usuario u WHERE TYPE(u) <> Paciente AND u.ativo = false")
+    List<Usuario> findAllFuncionariosInativos();
 }

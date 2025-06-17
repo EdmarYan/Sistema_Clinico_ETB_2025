@@ -11,5 +11,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
 
     // Este metodo mágico do Spring Data JPA vai procurar por pacientes
     // cujo nome contenha o texto que passarmos, ignorando maiúsculas/minúsculas.
-    List<Paciente> findByNomeContainingIgnoreCase(String nome);
+    List<Paciente> findAllByAtivoTrue();
+
+    List<Paciente> findByAtivoTrueAndNomeContainingIgnoreCase(String nome);
+
+    List<Paciente> findAllByAtivoFalse();
 }

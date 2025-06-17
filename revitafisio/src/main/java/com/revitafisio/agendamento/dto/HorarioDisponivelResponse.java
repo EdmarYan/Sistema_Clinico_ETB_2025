@@ -1,4 +1,4 @@
-package com.revitafisio.funcionario.repository;
+package com.revitafisio.agendamento.dto;
 
 import com.revitafisio.entities.agendamentos.HorarioDisponivel;
 import java.time.LocalDate; // Verifique se este import está presente
@@ -8,7 +8,7 @@ import java.time.LocalTime;
  * DTO (Record) para transportar os dados de um horário disponível.
  */
 public record HorarioDisponivelResponse(
-        Integer id,
+        long id,
         LocalDate data, // <-- CAMPO ADICIONADO E CORRIGIDO
         LocalTime horaInicio,
         LocalTime horaFim,
@@ -21,7 +21,7 @@ public record HorarioDisponivelResponse(
     public HorarioDisponivelResponse(HorarioDisponivel horario) {
         this(
                 horario.getIdHorario(),
-                horario.getData(), // <-- CAMPO ADICIONADO E CORRIGIDO
+                horario.getData(),
                 horario.getHoraInicio(),
                 horario.getHoraFim(),
                 horario.isDisponivel()

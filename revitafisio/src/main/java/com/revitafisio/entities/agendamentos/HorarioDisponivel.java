@@ -20,7 +20,7 @@ public class HorarioDisponivel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_horario")
-    private Integer idHorario;
+    private Long idHorario;
 
     @ManyToOne
     @JoinColumn(name = "id_fisioterapeuta", nullable = false)

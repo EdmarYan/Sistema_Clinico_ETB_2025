@@ -1,4 +1,4 @@
-package com.revitafisio.funcionario.dto;
+package com.revitafisio.agendamento.dto;
 
 import com.revitafisio.entities.agendamentos.Agendamento;
 import java.time.LocalDateTime;

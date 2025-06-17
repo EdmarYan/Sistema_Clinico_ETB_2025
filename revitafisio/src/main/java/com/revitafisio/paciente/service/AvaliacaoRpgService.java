@@ -1,10 +1,12 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.AvaliacaoRpg;
+import com.revitafisio.entities.usuarios.Paciente;
 import com.revitafisio.paciente.dto.AvaliacaoRpgRequest;
 import com.revitafisio.paciente.repository.AvaliacaoRpgRepository;
 import com.revitafisio.funcionario.repository.FuncionarioRepository;
 import com.revitafisio.paciente.repository.PacienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +28,25 @@ public class AvaliacaoRpgService {
 
     @Transactional
     public AvaliacaoRpg salvar(AvaliacaoRpgRequest request) {
-        var paciente = pacienteRepository.findById(request.idPaciente())
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado."));
+        // Validação do paciente
+        Paciente paciente = pacienteRepository.findById(request.idPaciente())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado."));
+
+        if (!paciente.isAtivo()) {
+            throw new IllegalStateException("Não é possível salvar avaliação para um paciente inativo.");
+        }
+
+        // Validação do fisioterapeuta
         var fisioterapeuta = funcionarioRepository.findById(request.idFisioterapeuta())
-                .orElseThrow(() -> new RuntimeException("Fisioterapeuta não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Fisioterapeuta não encontrado."));
+
+        // Validação de campos obrigatórios
+        if (request.diagnostico_clinico() == null || request.diagnostico_clinico().isBlank()) {
+            throw new IllegalArgumentException("Diagnóstico clínico é obrigatório.");
+        }
+        if (request.tratamento_proposto() == null || request.tratamento_proposto().isBlank()) {
+            throw new IllegalArgumentException("Tratamento proposto é obrigatório.");
+        }
 
         AvaliacaoRpg avaliacao = avaliacaoRepository.findByPacienteIdUsuario(request.idPaciente())
                 .orElse(new AvaliacaoRpg());

@@ -36,6 +36,7 @@ public class PacienteService {
         novoPaciente.setNome(request.nome());
         novoPaciente.setCpf(request.cpf());
         novoPaciente.setDataNascimento(request.dataNascimento());
+        novoPaciente.setAtivo(true);
 
         // MUDANÇA AQUI: Geramos uma senha aleatória e segura que nunca será usada.
         novoPaciente.setSenha(UUID.randomUUID().toString());
@@ -51,7 +52,7 @@ public class PacienteService {
     }
 
     public List<PacienteResponse> buscarPorNome(String nome) {
-        var pacientes = pacienteRepository.findByNomeContainingIgnoreCase(nome);
+        var pacientes = pacienteRepository.findByAtivoTrueAndNomeContainingIgnoreCase(nome);
         return pacientes.stream()
                 .map(this::toPacienteResponse)
                 .toList();
@@ -63,10 +64,21 @@ public class PacienteService {
         return toPacienteDetalhesResponse(paciente);
     }
 
+    public List<PacienteResponse> buscarTodosInativos() {
+        return pacienteRepository.findAllByAtivoFalse()
+                .stream()
+                .map(this::toPacienteResponse)
+                .toList();
+    }
+
     @Transactional
     public PacienteDetalhesResponse atualizarPaciente(Integer id, AtualizarPacienteRequest request) {
         var paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado."));
+
+        if (!paciente.isAtivo()) {
+            throw new IllegalStateException("Não é possível atualizar um paciente inativo.");
+        }
 
         paciente.setNome(request.nome());
         paciente.setDataNascimento(request.dataNascimento());
@@ -120,11 +132,13 @@ public class PacienteService {
     }
     // NOVO METODO - READ (Buscar Todos)
     public List<PacienteResponse> buscarTodos() {
-        // Usa o metodo findAll() que já vem com o JpaRepository
-        var pacientes = pacienteRepository.findAll();
-        // Converte a lista de Entidades para a lista de DTOs
-        return pacientes.stream()
-                .map(this::toPacienteResponse)
+        return pacienteRepository.findAllByAtivoTrue()
+                .stream()
+                .map(paciente -> new PacienteResponse(
+                        paciente.getIdUsuario(),
+                        paciente.getNome(),
+                        paciente.getCpf()
+                ))
                 .toList();
     }
 }

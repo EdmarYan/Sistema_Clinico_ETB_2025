@@ -1,8 +1,8 @@
 package com.revitafisio.paciente.Controller;
 
-import com.revitafisio.paciente.dto.AtualizarPacienteRequest;   // Import do novo DTO
+import com.revitafisio.paciente.dto.AtualizarPacienteRequest;
 import com.revitafisio.funcionario.dto.CriarPacienteRequest;
-import com.revitafisio.paciente.dto.PacienteDetalhesResponse; // Import do novo DTO
+import com.revitafisio.paciente.dto.PacienteDetalhesResponse;
 import com.revitafisio.paciente.dto.PacienteResponse;
 import com.revitafisio.paciente.service.PacienteService;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,35 @@ public class PacienteController {
         return ResponseEntity.created(URI.create("/pacientes/" + pacienteId)).build();
     }
 
+    /**
+     * CORREÇÃO PRINCIPAL: Unifica a busca de pacientes.
+     * 1. Se a URL for /pacientes (sem parâmetros), lista todos os ativos.
+     * 2. Se a URL for /pacientes?nome=Joao, busca por nome.
+     * O @RequestParam 'required = false' torna o parâmetro 'nome' opcional.
+     */
     @GetMapping
-    public ResponseEntity<List<PacienteResponse>> buscarPacientes(@RequestParam(name = "nome", required = false) String nome) {
-        // Se um 'nome' foi passado na URL, busca por nome.
+    public ResponseEntity<List<PacienteResponse>> buscarPacientes(
+            @RequestParam(name = "nome", required = false) String nome) {
+
         if (nome != null && !nome.isBlank()) {
+            // Se um nome foi fornecido, busca por nome
             var listaPacientes = pacienteService.buscarPorNome(nome);
             return ResponseEntity.ok(listaPacientes);
         } else {
-            // Se nenhum 'nome' foi passado, busca todos os pacientes.
-            var listaPacientes = pacienteService.buscarTodos();
-            return ResponseEntity.ok(listaPacientes);
+            // Se nenhum nome foi fornecido, busca todos os pacientes ativos
+            var listaPacantes = pacienteService.buscarTodos(); // Este método já busca ativos
+            return ResponseEntity.ok(listaPacantes);
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/inativos")
+    public ResponseEntity<List<PacienteResponse>> listarPacientesInativos() {
+        var inativos = pacienteService.buscarTodosInativos();
+        return ResponseEntity.ok(inativos);
+    }
+
+    // Adicionamos uma expressão regular para que esta rota SÓ aceite números como ID.
+    @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<PacienteDetalhesResponse> buscarPorId(@PathVariable Integer id) {
         var paciente = pacienteService.buscarPorId(id);
         return ResponseEntity.ok(paciente);
@@ -52,12 +67,13 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteAtualizado);
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}/inativar")
     public ResponseEntity<Void> inativarPaciente(@PathVariable Integer id) {
         pacienteService.inativarPaciente(id);
         return ResponseEntity.noContent().build();
     }
-    @PatchMapping("/{id}/ativar") // Usando um endpoint específico para a ação
+
+    @PatchMapping("/{id}/ativar")
     public ResponseEntity<Void> ativarPaciente(@PathVariable Integer id) {
         pacienteService.ativarPaciente(id);
         return ResponseEntity.noContent().build();

@@ -1,10 +1,12 @@
 package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.AvaliacaoOrtopedia;
+import com.revitafisio.entities.usuarios.Paciente;
 import com.revitafisio.paciente.dto.AvaliacaoOrtopediaRequest;
 import com.revitafisio.paciente.repository.AvaliacaoOrtopediaRepository;
 import com.revitafisio.funcionario.repository.FuncionarioRepository;
 import com.revitafisio.paciente.repository.PacienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,16 +28,30 @@ public class AvaliacaoOrtopediaService {
 
     @Transactional
     public AvaliacaoOrtopedia salvar(AvaliacaoOrtopediaRequest request) {
-        var paciente = pacienteRepository.findById(request.idPaciente())
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado."));
-        var fisioterapeuta = funcionarioRepository.findById(request.idFisioterapeuta())
-                .orElseThrow(() -> new RuntimeException("Fisioterapeuta não encontrado."));
+        // Validação do paciente
+        Paciente paciente = pacienteRepository.findById(request.idPaciente())
+                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado."));
 
-        // Verifica se já existe uma avaliação para este paciente para decidir se cria uma nova ou atualiza.
+        if (!paciente.isAtivo()) {
+            throw new IllegalStateException("Não é possível salvar avaliação para um paciente inativo.");
+        }
+
+        // Validação do fisioterapeuta
+        var fisioterapeuta = funcionarioRepository.findById(request.idFisioterapeuta())
+                .orElseThrow(() -> new EntityNotFoundException("Fisioterapeuta não encontrado."));
+
+        // Validação de campos obrigatórios
+        if (request.queixa_principal() == null || request.queixa_principal().isBlank()) {
+            throw new IllegalArgumentException("Queixa principal é obrigatória.");
+        }
+        if (request.diagnostico_fisioterapeutico() == null || request.diagnostico_fisioterapeutico().isBlank()) {
+            throw new IllegalArgumentException("Diagnóstico fisioterapêutico é obrigatório.");
+        }
+
         AvaliacaoOrtopedia avaliacao = avaliacaoRepository.findByPacienteIdUsuario(request.idPaciente())
                 .orElse(new AvaliacaoOrtopedia());
 
-        // Mapeia todos os campos do DTO para a Entidade
+        // Mapeamento completo dos campos
         avaliacao.setPaciente(paciente);
         avaliacao.setFisioterapeuta(fisioterapeuta);
         if (avaliacao.getDataAvaliacao() == null) {
