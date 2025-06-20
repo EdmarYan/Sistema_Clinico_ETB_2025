@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- ============== CABEÇALHO E METADADOS ============== -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Relatórios - Revitafisio</title>
+
+    <!-- Vínculos com as folhas de estilo do Font Awesome e do tema SB Admin 2 -->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
@@ -12,6 +15,7 @@
 
 <body id="page-top">
 <div id="wrapper">
+    <!-- ======================= SIDEBAR (MENU LATERAL) ================ -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard/dashboard.html">
             <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-heartbeat"></i></div>
@@ -26,8 +30,10 @@
         <div class="text-center d-none d-md-inline"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
     </ul>
 
+    <!-- ==================== ÁREA DE CONTEÚDO PRINCIPAL ================ -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
+            <!-- Barra de Navegação Superior (Topbar) padrão -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
                 <ul class="navbar-nav ml-auto">
@@ -43,11 +49,15 @@
                 </ul>
             </nav>
 
+            <!-- Container Principal do Conteúdo da Página -->
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Relatórios Gerenciais</h1>
+
+                <!-- Card para o relatório de atendimentos -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Atendimentos Mensais por Fisioterapeuta</h6></div>
                     <div class="card-body">
+                        <!-- Filtros para a geração do relatório -->
                         <div class="row g-3 align-items-end mb-4">
                             <div class="col-md-4">
                                 <label for="mesAnoInput" class="form-label">Selecione o Mês e Ano</label>
@@ -57,9 +67,14 @@
                                 <button id="gerarRelatorioBtn" class="btn btn-primary w-100">Gerar Relatório</button>
                             </div>
                         </div>
+
+                        <!-- Área onde o resultado do relatório será exibido -->
                         <div id="resultado-relatorio">
+                            <!-- Indicador de loading -->
                             <div id="loading" class="text-center d-none"><div class="spinner-border text-primary" role="status"></div></div>
+                            <!-- Título dinâmico do relatório -->
                             <h5 id="titulo-relatorio" class="d-none">Resultado para: <span></span></h5>
+                            <!-- Tabela de resultados -->
                             <div class="table-responsive">
                                 <table class="table table-bordered d-none" id="tabela-relatorio" width="100%">
                                     <thead><tr><th>Fisioterapeuta</th><th class="text-end">Total de Atendimentos Realizados</th></tr></thead>
@@ -71,15 +86,38 @@
                 </div>
             </div>
         </div>
+        <!-- Rodapé Fixo -->
         <footer class="sticky-footer bg-white">
             <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Revitafisio 2025</span></div></div>
         </footer>
     </div>
 </div>
 
+<!-- =============================================================== -->
+<!-- ============= MODAL DE ALERTA GENÉRICO ======================== -->
+<!-- =============================================================== -->
+<!-- Este modal fica oculto e será ativado pelo JS para exibir alertas -->
+<div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Atenção</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="alertModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-dismiss="modal" id="alertModalOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Scripts essenciais do template e o script específico da página -->
 <script src="../../vendor/jquery/jquery.min.js"></script>
 <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="../../js/sb-admin-2.min.js"></script>
 <script src="relatorios.js"></script>
 </body>

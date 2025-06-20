@@ -1,40 +1,67 @@
-// Este evento garante que o script só rode depois que a página HTML inteira for carregada
+/**
+ * Arquivo: dashboard.js
+ * Descrição: Contém toda a lógica de frontend para a página de Dashboard.
+ * Responsabilidades:
+ * - Validação de sessão do usuário.
+ * - Renderização dinâmica de componentes baseada no perfil do usuário.
+ * - Funcionalidade de busca de pacientes por Nome ou CPF.
+ * - Lógica de logout.
+ */
+
+// Este evento garante que o script só rode depois que a página HTML inteira for carregada.
 document.addEventListener('DOMContentLoaded', function() {
+
+    // --- 1. VERIFICAÇÃO DE SEGURANÇA ---
+    // Busca os dados do usuário salvos no localStorage durante o login.
     const dadosUsuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+
+    // Se não houver dados ou o nome do usuário não existir, o usuário não está logado.
+    // Ele é redirecionado imediatamente para a tela de login para proteger a página.
     if (!dadosUsuario || !dadosUsuario.nome) {
+        alert("Acesso não autorizado. Por favor, faça o login.");
         window.location.href = '../../login.html';
-        return;
+        return; // Interrompe a execução do script.
     }
 
-    // Preenche informações do template
+    // --- 2. INICIALIZAÇÃO DA PÁGINA ---
+    // Preenche o nome do usuário na barra de navegação superior.
     document.getElementById('userName').textContent = dadosUsuario.nome;
+
+    // Chama a função para desenhar os componentes corretos para este tipo de usuário.
     renderizarComponentes(dadosUsuario.tipoUsuario);
+
+    // Carrega a lista inicial de pacientes ativos na tabela.
     carregarPacientesIniciais();
 
-    // Adiciona os "ouvintes" de eventos aos botões
+    // --- 3. LISTENERS DE EVENTOS ---
+    // Adiciona o evento de clique para o botão de logout.
     document.getElementById('logoutButton').addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.clear();
-        window.location.href = '../../login.html';
+        e.preventDefault(); // Previne qualquer ação padrão do link.
+        localStorage.clear(); // Limpa todos os dados salvos no localStorage.
+        window.location.href = '../../login.html'; // Redireciona para o login.
     });
+
+    // Adiciona o evento de submissão para o formulário de busca.
     document.getElementById('formBuscaPaciente').addEventListener('submit', (e) => {
-        e.preventDefault();
-        buscarPacientes();
+        e.preventDefault(); // Previne o recarregamento da página.
+        buscarPacientes(); // Chama a função de busca.
     });
 });
 
 /**
- * Função que desenha os componentes visuais (cards e links do menu)
- * de acordo com o perfil do usuário logado.
- * @param {string} tipoUsuario - O tipo do usuário (ex: 'ADMIN', 'FISIOTERAPEUTA').
+ * Função que desenha os componentes visuais (cards de atalho e links do menu)
+ * de acordo com o perfil do usuário logado (Controle de Acesso Baseado em Papel - RBAC no frontend).
+ * @param {string} tipoUsuario - O tipo do usuário vindo da API (ex: 'ADMIN', 'FISIOTERAPEUTA').
  */
 function renderizarComponentes(tipoUsuario) {
     const cardsContainer = document.getElementById('cards-container');
     const sidebarContainer = document.getElementById('sidebar-links');
+
+    // Limpa os contêineres para garantir que não haja conteúdo duplicado.
     cardsContainer.innerHTML = '';
     sidebarContainer.innerHTML = '';
 
-    // Renderiza Cards de Atalho
+    // Lógica para renderizar os CARDS de atalho com base no perfil.
     if (tipoUsuario.includes('ADMIN') || tipoUsuario.includes('RECEPCIONISTA')) {
         cardsContainer.innerHTML += createCard('Pacientes', 'Novo Cadastro', '../cadastro-paciente/cadastro-paciente.html', 'primary', 'user-plus');
     }
@@ -45,22 +72,26 @@ function renderizarComponentes(tipoUsuario) {
     if (tipoUsuario.includes('FISIOTERAPEUTA')) {
         cardsContainer.innerHTML += createCard('Minha Área', 'Definir Horários', '../meus-horarios/meus-horarios.html', 'info', 'id-badge');
     }
-    // Card de Agenda é visível para todos os funcionários
+    // Card de Agenda é visível para todos os funcionários logados.
     cardsContainer.innerHTML += createCard('Agenda', 'Acessar', '../agenda/agenda.html', 'success', 'calendar-alt');
 
-    // Renderiza Links da Sidebar
+    // Lógica para renderizar os LINKS do menu lateral com base no perfil.
     if (tipoUsuario.includes('ADMIN')) {
-        sidebarContainer.innerHTML += createSidebarLink('Gerenciar Equipe', '../funcionarios/funcionarios.html', 'users-cog', false);
-        sidebarContainer.innerHTML += createSidebarLink('Relatórios', '../relatorios/relatorios.html', 'chart-bar', false);
+        sidebarContainer.innerHTML += createSidebarLink('Gerenciar Equipe', '../funcionarios/funcionarios.html', 'users-cog');
+        sidebarContainer.innerHTML += createSidebarLink('Relatórios', '../relatorios/relatorios.html', 'chart-bar');
     }
     if (tipoUsuario.includes('FISIOTERAPEUTA')) {
-        sidebarContainer.innerHTML += createSidebarLink('Meus Horários', '../meus-horarios/meus-horarios.html', 'clock', false);
+        sidebarContainer.innerHTML += createSidebarLink('Meus Horários', '../meus-horarios/meus-horarios.html', 'clock');
     }
-    // #### LINHA CORRIGIDA - ADICIONANDO O LINK DA AGENDA ####
-    sidebarContainer.innerHTML += createSidebarLink('Agenda', '../agenda/agenda.html', 'calendar-alt', false);
+    sidebarContainer.innerHTML += createSidebarLink('Agenda', '../agenda/agenda.html', 'calendar-alt');
 }
 
-// Funções auxiliares para criar os componentes dinâmicos
+// --- FUNÇÕES AUXILIARES PARA RENDERIZAÇÃO ---
+
+/**
+ * Função auxiliar que gera o HTML de um card de atalho.
+ * @returns {string} Uma string HTML contendo o card.
+ */
 function createCard(titulo, texto, link, cor, icone) {
     return `
         <div class="col-xl-3 col-md-6 mb-4">
@@ -78,29 +109,67 @@ function createCard(titulo, texto, link, cor, icone) {
         </div>`;
 }
 
-function createSidebarLink(texto, link, icone, ativo) {
-    const activeClass = ativo ? 'active' : '';
-    return `<li class="nav-item ${activeClass}"><a class="nav-link" href="${link}"><i class="fas fa-fw fa-${icone}"></i><span>${texto}</span></a></li>`;
+/**
+ * Função auxiliar que gera o HTML de um item do menu lateral.
+ * @returns {string} Uma string HTML contendo o item de menu.
+ */
+function createSidebarLink(texto, link, icone) {
+    return `<li class="nav-item"><a class="nav-link" href="${link}"><i class="fas fa-fw fa-${icone}"></i><span>${texto}</span></a></li>`;
 }
 
-// Funções para buscar e exibir os pacientes na tabela
-async function carregarPacientesIniciais() { await buscarPacientesNaApi('/pacientes'); }
+// --- FUNÇÕES DE BUSCA DE PACIENTES ---
+
+/** Função de conveniência para carregar a lista inicial de pacientes ativos. */
+async function carregarPacientesIniciais() {
+    await buscarPacientesNaApi('/pacientes');
+}
+
+/** * Função que lê o input de busca, determina se a busca é por nome ou CPF,
+ * e monta a URL correta para a chamada da API.
+ */
 async function buscarPacientes() {
-    const busca = document.getElementById('buscaInput').value;
-    const url = busca ? `/pacientes?nome=${encodeURIComponent(busca)}` : '/pacientes';
+    const busca = document.getElementById('buscaInput').value.trim();
+    let url;
+
+    // Se o campo de busca estiver vazio, carrega todos os pacientes ativos.
+    if (!busca) {
+        url = '/pacientes';
+    }
+        // Expressão regular para verificar se o input contém apenas números, pontos ou traços.
+    // Isso indica que o usuário provavelmente digitou um CPF.
+    else if (/^[\d.-]+$/.test(busca)) {
+        const cpfNumerico = busca.replace(/\D/g, ''); // Limpa a máscara para enviar só os números.
+        // **NOTA TÉCNICA:** Para esta busca funcionar, é necessário que o backend
+        // tenha um endpoint que aceite o parâmetro de busca 'cpf'. Ex: /pacientes?cpf=...
+        url = `/pacientes?cpf=${encodeURIComponent(cpfNumerico)}`;
+    }
+    // Se não for um CPF, assume-se que é uma busca por nome.
+    else {
+        url = `/pacientes?nome=${encodeURIComponent(busca)}`;
+    }
+
     await buscarPacientesNaApi(url);
 }
 
+/**
+ * Função principal que executa a chamada fetch para a API,
+ * mostra o feedback de "carregando" e renderiza o resultado na tabela.
+ * @param {string} url - A URL da API a ser chamada.
+ */
 async function buscarPacientesNaApi(url) {
     const tbody = document.getElementById('listaResultados');
-    tbody.innerHTML = '<tr><td colspan="3" class="text-center">Buscando...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" class="text-center">Buscando...</td></tr>'; // Feedback de carregamento.
+
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Erro na requisição');
+        if (!response.ok) throw new Error(`Erro na requisição: ${response.statusText}`);
+
         const pacientes = await response.json();
-        tbody.innerHTML = '';
+        tbody.innerHTML = ''; // Limpa a tabela para novos resultados.
+
         if (pacientes.length > 0) {
             pacientes.forEach(paciente => {
+                // Cria uma nova linha na tabela para cada paciente encontrado.
                 tbody.innerHTML += `
                     <tr>
                         <td>${paciente.nome}</td>
@@ -112,6 +181,8 @@ async function buscarPacientesNaApi(url) {
             tbody.innerHTML = '<tr><td colspan="3" class="text-center">Nenhum paciente encontrado.</td></tr>';
         }
     } catch (error) {
+        // Tratamento de erro para falhas de rede ou da API.
         tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Erro ao carregar pacientes.</td></tr>';
+        console.error("Falha ao buscar pacientes:", error);
     }
 }

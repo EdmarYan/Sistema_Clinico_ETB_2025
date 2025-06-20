@@ -1,3 +1,14 @@
+/**
+ * @file Estilos customizados para a página de detalhes do funcionário.
+ * @description Define a aparência de elementos específicos que não estão
+ * no tema principal SB Admin 2.
+ */
+
+/*
+ * Classe para garantir que um elemento fique oculto.
+ * O !important é usado aqui para sobrescrever com certeza as classes de
+ * display do Bootstrap (como d-flex, d-block) quando necessário.
+ */
 .hidden {
-    display: none !important; /* Garante que o elemento seja escondido */
+    display: none !important;
 }

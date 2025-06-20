@@ -2,12 +2,17 @@ package com.revitafisio.entities.paciente;
 
 import com.revitafisio.entities.usuarios.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
+/**
+ * Entidade que mapeia a ficha de avaliação específica para a especialidade de RPG.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,35 +26,43 @@ public class AvaliacaoRpg {
     @Column(name = "id_avaliacao")
     private Integer idAvaliacao;
 
-    @ManyToOne
+    @NotNull(message = "O paciente da avaliação não pode ser nulo.")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_paciente", nullable = false)
     private Usuario paciente;
 
-    @ManyToOne
+    @NotNull(message = "O fisioterapeuta da avaliação não pode ser nulo.")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_fisioterapeuta", nullable = false)
     private Usuario fisioterapeuta;
 
+    @NotNull(message = "A data da avaliação é obrigatória.")
+    @PastOrPresent(message = "A data da avaliação não pode ser no futuro.")
     @Column(name = "data_avaliacao", nullable = false)
     private LocalDate dataAvaliacao;
 
     // --- Campos de Texto ---
-    private String diagnostico_clinico;
-    @Column(columnDefinition = "TEXT") private String hma;
-    private String posicao_dor;
-    @Column(columnDefinition = "TEXT") private String outras_patologias;
-    private String outros_exames;
-    private String medicamentos_descricao;
-    @Column(columnDefinition = "TEXT") private String outros_desequilibrios;
-    @Column(columnDefinition = "TEXT") private String tratamento_proposto;
-    @Column(columnDefinition = "TEXT") private String observacoes;
+    @Column(length = 255) private String diagnostico_clinico;
+    @Lob @Column(columnDefinition = "TEXT") private String hma;
+    @Column(length = 255) private String posicao_dor;
+    @Lob @Column(columnDefinition = "TEXT") private String outras_patologias;
+    @Column(length = 255) private String outros_exames;
+    @Column(length = 255) private String medicamentos_descricao;
+    @Lob @Column(columnDefinition = "TEXT") private String outros_desequilibrios;
+    @Lob @Column(columnDefinition = "TEXT") private String tratamento_proposto;
+    @Lob @Column(columnDefinition = "TEXT") private String observacoes;
 
-    // ### MUDANÇA AQUI: de 'boolean' para 'Boolean' ###
+    // --- MELHORIA: de 'boolean' primitivo para 'Boolean' wrapper ---
+    // Mudar para o tipo wrapper (Boolean) é uma prática recomendada para campos de entidade
+    // que representam checkboxes ou opções que podem não ser preenchidas.
+    // Isso permite que o valor no banco de dados seja NULL, representando "não informado",
+    // o que é diferente de 'false' (explicitamente marcado como não).
     private Boolean ressonancia_magnetica;
     private Boolean raio_x;
     private Boolean tomografia;
     private Boolean uso_medicamentos;
 
-    // --- Campos com Enums (sem alteração) ---
+    // --- Campos com Enums (garantem a consistência dos dados) ---
     @Enumerated(EnumType.STRING) private GrauDor grau_dor;
     @Enumerated(EnumType.STRING) private PosicaoCabeca cabeca;
     @Enumerated(EnumType.STRING) private NivelamentoOmbros ombros;
@@ -60,7 +73,7 @@ public class AvaliacaoRpg {
     @Enumerated(EnumType.STRING) private PosicaoPelve pelve;
     @Enumerated(EnumType.STRING) private PosicaoEscapulas escapulas;
 
-    // Enums (sem alteração)
+    // Definição dos Enums para esta avaliação
     public enum GrauDor { LEVE, MODERADA, INTENSA }
     public enum PosicaoCabeca { ALINHADA, RODADA_DIREITA, RODADA_ESQUERDA, INCLINADA_ESQUERDA, INCLINADA_DIREITA }
     public enum NivelamentoOmbros { NIVELADOS, ESQUERDO_ELEVADO, DIREITO_ELEVADO }

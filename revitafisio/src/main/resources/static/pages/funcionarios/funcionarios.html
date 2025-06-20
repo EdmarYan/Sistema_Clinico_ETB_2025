@@ -59,9 +59,7 @@
 
                 <!-- Seção de Gerenciamento de Funcionários -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Equipe de Funcionários</h6>
-                    </div>
+                    <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Equipe de Funcionários</h6></div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Filtrar funcionários por status:</label>
@@ -72,9 +70,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                <tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Nome</th><th>Cargo</th><th>Ações</th></tr></thead>
                                 <tbody id="listaFuncionarios"></tbody>
                             </table>
                         </div>
@@ -83,9 +79,7 @@
 
                 <!-- Seção de Gerenciamento de Pacientes -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Pacientes</h6>
-                    </div>
+                    <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Pacientes</h6></div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Filtrar pacientes por status:</label>
@@ -96,9 +90,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" width="100%" cellspacing="0">
-                                <thead>
-                                <tr><th>Nome</th><th>CPF</th><th style="width: 280px;">Ações</th></tr>
-                                </thead>
+                                <thead><tr><th>Nome</th><th>CPF</th><th style="width: 280px;">Ações</th></tr></thead>
                                 <tbody id="listaPacientes"></tbody>
                             </table>
                         </div>
@@ -108,11 +100,35 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Revitafisio 2025</span></div></div>
-        </footer>
+        <footer class="sticky-footer bg-white"><div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Revitafisio 2025</span></div></div></footer>
     </div>
 </div>
+
+<!-- =============================================================== -->
+<!-- ============= MODAL DE CONFIRMAÇÃO GENÉRICO =================== -->
+<!-- =============================================================== -->
+<!-- Este modal fica oculto e será ativado e preenchido pelo JavaScript -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmar Ação</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="confirmationModalBody">
+                <!-- A mensagem de confirmação será inserida aqui pelo JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <!-- O botão de confirmação não faz nada por padrão. O JS adicionará a ação. -->
+                <button class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Scripts essenciais do tema -->
 <script src="../../vendor/jquery/jquery.min.js"></script>

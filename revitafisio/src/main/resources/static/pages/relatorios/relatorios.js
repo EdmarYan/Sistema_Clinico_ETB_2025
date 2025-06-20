@@ -1,30 +1,23 @@
 /**
  * @file Lógica para a página de relatórios.
  * @description Garante que apenas Admins acessem, busca os dados do relatório
- * e popula a tabela com os resultados.
+ * e popula a tabela com os resultados, usando um modal customizado para alertas.
  */
 document.addEventListener('DOMContentLoaded', () => {
-    // Pega os dados do usuário logado do armazenamento local do navegador
     const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-
-    // Proteção de Rota: Se não for admin, volta para o dashboard
     if (!usuarioLogado || !usuarioLogado.tipoUsuario.includes('ADMIN')) {
-        alert('Acesso negado. Esta página é apenas para Administradores.');
-        window.location.href = '../dashboard/dashboard.html';
+        showAlertModal('Acesso negado. Esta página é apenas para Administradores.', () => {
+            window.location.href = '../dashboard/dashboard.html';
+        });
         return;
     }
 
-    // Preenche o nome do usuário na barra superior e renderiza o menu lateral
     document.getElementById('userName').textContent = usuarioLogado.nome;
     renderizarSidebar(usuarioLogado.tipoUsuario);
-
-    // Define o valor padrão do seletor de data para o mês e ano atuais
     const hoje = new Date();
     const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
     const ano = hoje.getFullYear();
     document.getElementById('mesAnoInput').value = `${ano}-${mes}`;
-
-    // Adiciona os "ouvintes" de eventos aos botões
     document.getElementById('gerarRelatorioBtn').addEventListener('click', gerarRelatorio);
     document.getElementById('logoutButton').addEventListener('click', () => {
         localStorage.clear();
@@ -38,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function renderizarSidebar(tipoUsuario) {
     const sidebarContainer = document.getElementById('sidebar-links');
+    if(!sidebarContainer) return;
     sidebarContainer.innerHTML = '';
 
     if (tipoUsuario.includes('ADMIN')) {
@@ -47,12 +41,16 @@ function renderizarSidebar(tipoUsuario) {
     sidebarContainer.innerHTML += `<li class="nav-item"><a class="nav-link" href="../agenda/agenda.html"><i class="fas fa-fw fa-calendar-alt"></i><span>Agenda</span></a></li>`;
 }
 
+
 /**
  * Pega o mês/ano selecionado, chama a API do backend e exibe os resultados na tabela.
  */
 async function gerarRelatorio() {
     const mesAno = document.getElementById('mesAnoInput').value;
-    if (!mesAno) { alert('Por favor, selecione um mês e ano.'); return; }
+    if (!mesAno) {
+        showAlertModal('Por favor, selecione um mês e ano.');
+        return;
+    }
     const [ano, mes] = mesAno.split('-');
 
     const loadingEl = document.getElementById('loading');
@@ -67,9 +65,7 @@ async function gerarRelatorio() {
     try {
         const response = await fetch(`/relatorios/atendimentos-mensal?ano=${ano}&mes=${mes}`);
         if (!response.ok) throw new Error('Falha ao gerar o relatório.');
-
         const dados = await response.json();
-
         tituloRelatorio.classList.remove('d-none');
         tituloRelatorio.querySelector('span').textContent = `${mes}/${ano}`;
 
@@ -82,11 +78,31 @@ async function gerarRelatorio() {
             });
         }
         tabela.classList.remove('d-none');
-
     } catch (error) {
         corpoTabela.innerHTML = `<tr><td colspan="2" class="text-center text-danger">${error.message}</td></tr>`;
         tabela.classList.remove('d-none');
     } finally {
         loadingEl.classList.add('d-none');
     }
+}
+
+/**
+ * Função utilitária para exibir um modal de alerta simples.
+ * @param {string} message - A mensagem a ser exibida.
+ * @param {Function} [onClose] - Uma função opcional a ser executada ao fechar o modal.
+ */
+function showAlertModal(message, onClose) {
+    const modal = $('#alertModal');
+    const modalBody = document.getElementById('alertModalBody');
+    modalBody.textContent = message;
+
+    // Remove listeners antigos para segurança
+    modal.off('hidden.bs.modal');
+
+    if (onClose) {
+        // Executa a função de callback quando o modal for fechado
+        modal.on('hidden.bs.modal', onClose);
+    }
+
+    modal.modal('show');
 }

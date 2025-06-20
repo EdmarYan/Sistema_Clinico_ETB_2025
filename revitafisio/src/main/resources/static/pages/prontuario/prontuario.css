@@ -1,7 +1,11 @@
-.hidden { display: none; }
+/*
+ * Estilo para cada entrada no histórico de evoluções do paciente.
+ * Cria um visual de "timeline" com uma borda colorida à esquerda,
+ * tornando a leitura do histórico mais agradável e organizada.
+ */
 .evolution-entry {
-    border-left: 3px solid #4e73df; /* Cor primária do template */
-    background-color: #f8f9fc;
+    border-left: 3px solid #4e73df; /* Usa a cor primária do template para a borda. */
+    background-color: #f8f9fc; /* Um fundo cinza claro para destacar a entrada. */
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: .35rem;

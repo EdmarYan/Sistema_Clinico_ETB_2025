@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- ============== CABEÇALHO E METADADOS ============== -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Detalhes do Funcionário - Revitafisio</title>
 
+    <!-- Vínculos com as folhas de estilo do Font Awesome, Google Fonts, tema SB Admin 2, e um CSS customizado. -->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
@@ -14,7 +16,8 @@
 
 <body id="page-top">
 <div id="wrapper">
-
+    <!-- ======================= SIDEBAR (MENU LATERAL) ================ -->
+    <!-- Estrutura padrão do menu, que será preenchida dinamicamente pelo JS. -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard/dashboard.html">
             <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-heartbeat"></i></div>
@@ -29,8 +32,10 @@
         <div class="text-center d-none d-md-inline"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
     </ul>
 
+    <!-- ==================== ÁREA DE CONTEÚDO PRINCIPAL ================ -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
+            <!-- Barra de Navegação Superior (Topbar) padrão -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
                 <ul class="navbar-nav ml-auto">
@@ -46,33 +51,42 @@
                 </ul>
             </nav>
 
+            <!-- Container Principal do Conteúdo da Página -->
             <div class="container-fluid">
+                <!-- Indicador de loading, visível enquanto os dados são carregados -->
                 <div id="loading" class="text-center"><div class="spinner-border text-primary" role="status"></div></div>
 
+                <!-- Contêiner principal, fica oculto até que os dados sejam carregados -->
                 <div id="details-container" class="d-none">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800" id="nomeFuncionarioView"></h1>
                     </div>
 
+                    <!-- Card de Dados Cadastrais -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Dados do Profissional</h6>
-                            <div id="botoes-edicao-funcionario">
-                            </div>
+                            <!-- Botões de edição (Editar, Salvar, etc.) serão inseridos aqui pelo JS -->
+                            <div id="botoes-edicao-funcionario"></div>
                         </div>
                         <div class="card-body">
+                            <!-- 'viewMode' exibe os dados. 'editMode' contém o formulário de edição. O JS alterna entre eles. -->
                             <div id="viewMode"></div>
                             <form id="editMode" class="d-none"></form>
+                            <!-- Div para exibir mensagens de resultado após salvar -->
                             <div id="resultado" class="mt-3"></div>
                         </div>
                     </div>
 
+                    <!-- Card de Especialidades (visível apenas para Fisioterapeutas) -->
                     <div class="card shadow mb-4" id="card-especialidades" style="display: none;">
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">Especialidades Atendidas</h6>
                             <button class="btn btn-sm btn-outline-secondary" id="btn-editar-especialidades" data-toggle="modal" data-target="#especialidadesModal">Editar</button>
                         </div>
-                        <div class="card-body" id="lista-especialidades-badges"></div>
+                        <div class="card-body" id="lista-especialidades-badges">
+                            <!-- Badges coloridos das especialidades serão inseridos aqui pelo JS -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,12 +97,14 @@
     </div>
 </div>
 
+<!-- ============= MODAL PARA EDITAR ESPECIALIDADES ============= -->
 <div class="modal fade" id="especialidadesModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header"><h5 class="modal-title">Editar Especialidades</h5><button type="button" class="close" data-dismiss="modal"><span>&times;</span></button></div>
             <div class="modal-body">
                 <p>Selecione as especialidades deste profissional.</p>
+                <!-- Checkboxes das especialidades serão inseridos aqui pelo JS -->
                 <div id="checkbox-container-especialidades"></div>
                 <div id="resultadoModal" class="mt-2"></div>
             </div>
@@ -97,9 +113,11 @@
     </div>
 </div>
 
+<!-- MODAL DE CONFIRMAÇÃO GENÉRICO ADICIONADO -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="confirmationModalLabel">Atenção</h5><button class="close" type="button" data-dismiss="modal"><span>&times;</span></button></div><div class="modal-body" id="confirmationModalBody"></div><div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" id="confirmActionBtn">OK</button></div></div></div></div>
+
 <script src="../../vendor/jquery/jquery.min.js"></script>
 <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
 <script src="../../js/sb-admin-2.min.js"></script>
 <script src="prontuario-funcionario.js"></script>
 </body>

@@ -13,6 +13,7 @@
 
 <body id="page-top">
 <div id="wrapper">
+    <!-- Sidebar (Menu Lateral) -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard/dashboard.html">
             <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-heartbeat"></i></div>
@@ -27,8 +28,10 @@
         <div class="text-center d-none d-md-inline"><button class="rounded-circle border-0" id="sidebarToggle"></button></div>
     </ul>
 
+    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
+            <!-- Topbar (Barra Superior) -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"><i class="fa fa-bars"></i></button>
                 <ul class="navbar-nav ml-auto">
@@ -44,11 +47,13 @@
                 </ul>
             </nav>
 
+            <!-- Conteúdo Principal da Página -->
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800" id="welcomeHeader">Meus Horários de Trabalho</h1>
                 <p>Defina sua grade de horários semanal recorrente. A agenda do mês será gerada com base nestes horários.</p>
 
                 <div class="row">
+                    <!-- Coluna da Esquerda: Grade Semanal Existente -->
                     <div class="col-lg-7">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Minha Grade Semanal</h6></div>
@@ -58,6 +63,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Coluna da Direita: Adição e Geração de Horários -->
                     <div class="col-lg-5">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Adicionar Novo Horário</h6></div>
@@ -65,7 +71,7 @@
                                 <form id="formNovoHorario">
                                     <div class="mb-3">
                                         <label for="diaDaSemana" class="form-label">Dia da Semana</label>
-                                        <select id="diaDaSemana" class="form-select" required>
+                                        <select id="diaDaSemana" class="form-select custom-select" required>
                                             <option value="" disabled selected>Selecione...</option>
                                             <option value="MONDAY">Segunda-feira</option>
                                             <option value="TUESDAY">Terça-feira</option>
@@ -111,6 +117,27 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Revitafisio 2025</span></div></div>
         </footer>
+    </div>
+</div>
+
+<!-- =============================================================== -->
+<!-- ============= MODAL DE CONFIRMAÇÃO GENÉRICO =================== -->
+<!-- =============================================================== -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmar Ação</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="confirmationModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
+            </div>
+        </div>
     </div>
 </div>
 

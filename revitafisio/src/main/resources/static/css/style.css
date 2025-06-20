@@ -1,0 +1,281 @@
+/**
+ * Arquivo: css/style.css
+ * Descrição: Folha de estilo completa para a página de login. Define as cores,
+ * fontes, layout do card, formulário e elementos decorativos, seguindo a
+ * identidade visual do tema SB Admin.
+ */
+
+/* ===============================================================
+   TEMA E VARIÁVEIS DE CORES
+   Define as variáveis de cores globais para manter a consistência visual.
+   =============================================================== */
+:root {
+    --primary: #4e73df;
+    --primary-dark: #224abe;
+    --secondary: #858796;
+    --success: #1cc88a;
+    --danger: #e74a3b;
+    --light: #f8f9fc;
+    --dark: #5a5c69;
+    --white: #ffffff;
+    --gray: #6c757d;
+    --gray-light: #eaecf4;
+}
+
+/* ===============================================================
+   RESET E ESTILOS GLOBAIS
+   =============================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Garante que padding e borda não aumentem o tamanho do elemento. */
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Fonte principal do projeto. */
+    min-height: 100vh; /* Ocupa no mínimo 100% da altura da tela. */
+    display: flex; /* Habilita o Flexbox para alinhamento. */
+    align-items: center; /* Centraliza o conteúdo verticalmente. */
+    justify-content: center; /* Centraliza o conteúdo horizontalmente. */
+    padding: 20px; /* Adiciona um respiro nas laterais em telas menores. */
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    position: relative;
+    overflow: hidden; /* Impede que as ondas decorativas criem scroll. */
+}
+
+/* ===============================================================
+   ELEMENTOS DECORATIVOS
+   =============================================================== */
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+    z-index: 0; /* Garante que as ondas fiquem atrás do conteúdo principal. */
+}
+.wave svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 100px;
+}
+.wave .shape-fill {
+    fill: rgba(255, 255, 255, 0.15); /* Cor branca semi-transparente para o efeito. */
+}
+
+/* ===============================================================
+   LAYOUT PRINCIPAL E CARD
+   =============================================================== */
+.login-container {
+    width: 100%;
+    max-width: 480px; /* Ponto chave da responsividade: impede que o card fique largo demais em telas grandes. */
+    position: relative;
+    z-index: 1; /* Garante que o card fique na frente das ondas. */
+}
+
+.login-card {
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Sombra para dar profundidade. */
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.card-content {
+    padding: 40px; /* Espaçamento interno do card. */
+}
+
+/* ===============================================================
+   CABEÇALHO DO CARD (LOGO E TÍTULOS)
+   =============================================================== */
+.text-center {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.logo-container img {
+    height: 70px; /* Tamanho da logo. */
+    width: auto;  /* Mantém a proporção correta. */
+    margin-bottom: 20px; /* Espaço entre a logo e o título. */
+}
+h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+.text-center p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+/* ===============================================================
+   FORMULÁRIO DE LOGIN
+   =============================================================== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os elementos do formulário. */
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.forgot-password {
+    font-size: 0.875rem;
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.forgot-password:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ===============================================================
+   CAMPOS DE INPUT (CPF E SENHA)
+   =============================================================== */
+.input-container {
+    position: relative; /* Base para o posicionamento absoluto dos ícones. */
+}
+.input-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 1rem;
+    pointer-events: none; /* Permite clicar no input através do ícone. */
+}
+.input-container input {
+    width: 100%;
+    padding: 15px 15px 15px 45px; /* Padding esquerdo maior para o ícone. */
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s;
+    outline: none; /* Remove a borda padrão do navegador ao focar. */
+}
+/* Efeito de foco para melhorar a usabilidade. */
+.input-container input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.5);
+}
+
+/* Ícone de ver/ocultar senha */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gray);
+    cursor: pointer;
+    padding: 5px;
+}
+.password-toggle:hover {
+    color: var(--primary);
+}
+.hidden {
+    display: none;
+}
+
+/* ===============================================================
+   BOTÃO DE LOGIN E SPINNER
+   =============================================================== */
+.button-container button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-container button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px); /* Efeito de "levantar" ao passar o mouse. */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.button-container button:disabled {
+    background-color: var(--secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.spinner {
+    animation: spin 1s linear infinite; /* Animação de rotação contínua. */
+    margin-right: 8px;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===============================================================
+   FEEDBACK PARA O USUÁRIO
+   =============================================================== */
+#resultado {
+    text-align: center;
+    font-size: 0.875rem;
+    padding: 12px;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    min-height: 45px; /* Evita que o layout "pule" quando a mensagem aparece. */
+}
+.error-message {
+    background-color: #f8d7da;
+    color: var(--danger);
+    font-weight: 500;
+}
+.success-message {
+    background-color: #d4edda;
+    color: var(--success);
+    font-weight: 500;
+}
+
+/* ===============================================================
+   LINKS E RODAPÉ
+   =============================================================== */
+.back-link {
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-light);
+    text-align: center;
+}
+.back-link a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.back-link a:hover {
+    color: var(--primary-dark);
+}
+.footer {
+    text-align: center;
+    color: var(--white);
+    font-size: 0.875rem;
+    opacity: 0.8;
+}

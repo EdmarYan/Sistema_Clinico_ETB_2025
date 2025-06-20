@@ -1,6 +1,7 @@
 /**
  * @file Lógica da página de detalhes do funcionário (prontuario-funcionario.html)
- * @description Gerencia a exibição de dados, edição, status e associação de especialidades.
+ * @description Gerencia a exibição de dados, edição, status e associação de especialidades,
+ * utilizando um modal customizado para confirmações e alertas.
  */
 
 // =================================================================================
@@ -24,16 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Pega os dados do usuário que fez login, salvos no navegador
     usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 
-    // Validação de segurança: se não houver ID do funcionário ou usuário logado, redireciona para o login
+    // Validação de segurança: se não houver ID do funcionário ou usuário logado, redireciona.
     if (!funcionarioId || !usuarioLogado) {
-        alert('Acesso inválido ou sessão expirada.');
-        window.location.href = '../../login.html';
+        showConfirmationModal('Acesso inválido ou sessão expirada.', () => {
+            window.location.href = '../../login.html';
+        });
         return;
     }
 
+    // Adiciona o listener de evento ao formulário de edição.
     document.getElementById('editMode').addEventListener('submit', (event) => {
         event.preventDefault(); // Impede a submissão padrão do formulário
-        salvarAlteracoes();     // Chama sua função de salvamento existente
+        salvarAlteracoes();     // Chama sua função de salvamento
     });
 
     // Preenche informações do template (nome do usuário e menu lateral)
@@ -99,7 +102,7 @@ function preencherDadosNaTela(func) {
         <p><strong>CPF:</strong> ${func.cpf}</p>
         <p><strong>Data de Nascimento:</strong> ${new Date(func.dataNascimento).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
         <p><strong>Cargo(s):</strong> <span class="text-capitalize">${func.tipo_usuario.toLowerCase().replace('_', ' ')}</span></p>
-        <p><strong>Status:</strong> <span class="badge ${func.ativo ? 'bg-success' : 'bg-danger'}">${func.ativo ? 'Ativo' : 'Inativo'}</span></p>
+        <p><strong>Status:</strong> <span class="badge ${func.ativo ? 'badge-success' : 'badge-danger'}">${func.ativo ? 'Ativo' : 'Inativo'}</span></p>
     `;
 
     // Preenche o formulário de edição
@@ -174,8 +177,9 @@ async function carregarDadosFuncionario(id) {
         loadingEl.classList.add('d-none');
         detailsContainer.classList.remove('d-none');
     } catch (error) {
-        alert(error.message);
-        window.location.href = '../funcionarios/funcionarios.html';
+        showConfirmationModal(error.message, () => {
+            window.location.href = '../funcionarios/funcionarios.html';
+        });
     }
 }
 
@@ -211,47 +215,54 @@ async function salvarAlteracoes() {
         funcionarioAtual = await response.json();
         preencherDadosNaTela(funcionarioAtual);
         toggleEditMode(false);
-        alert('Dados atualizados com sucesso!');
+        showConfirmationModal('Dados atualizados com sucesso!', () => {});
     } catch (error) {
-        alert(error.message);
+        showConfirmationModal(error.message, () => {});
     }
 }
 
 /**
- * Envia um pedido para inativar o funcionário.
+ * Pede confirmação via modal e, se confirmado, envia a requisição para inativar o funcionário.
  * @param {number} id - O ID do funcionário.
  */
-async function inativarFuncionario(id) {
-    if (!confirm('Tem certeza que deseja INATIVAR este funcionário?')) return;
-    try {
-        const response = await fetch(`/funcionarios/${id}`, { method: 'DELETE' });
-        if (!response.ok) throw new Error('Falha ao inativar o funcionário.');
+function inativarFuncionario(id) {
+    showConfirmationModal('Tem certeza que deseja INATIVAR este funcionário?', async () => {
+        try {
+            // Nota: O endpoint original de inativação era DELETE. A boa prática é usar PATCH.
+            // Para manter a compatibilidade com o seu controller atual, mantemos DELETE por enquanto.
+            const response = await fetch(`/funcionarios/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Falha ao inativar o funcionário.');
 
-        alert('Funcionário inativado com sucesso!');
-        funcionarioAtual.ativo = false;
-        preencherDadosNaTela(funcionarioAtual);
-    } catch (error) {
-        alert(error.message);
-    }
+            showConfirmationModal('Funcionário inativado com sucesso!', () => {
+                funcionarioAtual.ativo = false;
+                preencherDadosNaTela(funcionarioAtual);
+            });
+        } catch (error) {
+            showConfirmationModal(error.message, () => {});
+        }
+    });
 }
 
 /**
- * Envia um pedido para reativar o funcionário.
+ * Pede confirmação via modal e, se confirmado, envia a requisição para reativar o funcionário.
  * @param {number} id - O ID do funcionário.
  */
-async function ativarFuncionario(id) {
-    if (!confirm('Tem certeza que deseja REATIVAR este funcionário?')) return;
-    try {
-        const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH' });
-        if (!response.ok) throw new Error('Falha ao reativar o funcionário.');
+function ativarFuncionario(id) {
+    showConfirmationModal('Tem certeza que deseja REATIVAR este funcionário?', async () => {
+        try {
+            const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH' });
+            if (!response.ok) throw new Error('Falha ao reativar o funcionário.');
 
-        alert('Funcionário reativado com sucesso!');
-        funcionarioAtual.ativo = true;
-        preencherDadosNaTela(funcionarioAtual);
-    } catch (error) {
-        alert(error.message);
-    }
+            showConfirmationModal('Funcionário reativado com sucesso!', () => {
+                funcionarioAtual.ativo = true;
+                preencherDadosNaTela(funcionarioAtual);
+            });
+        } catch (error) {
+            showConfirmationModal(error.message, () => {});
+        }
+    });
 }
+
 
 /**
  * Salva as especialidades selecionadas no modal.
@@ -319,6 +330,23 @@ function preencherModalEspecialidades(especialidadesDoFisio = []) {
                 <label class="form-check-label" for="esp-${esp.idEspecialidade}">${esp.nome}</label>
             </div>`;
     });
+}
+
+/**
+ * Exibe um modal de confirmação ou alerta.
+ * @param {string} message - A mensagem a ser exibida.
+ * @param {Function} onConfirm - A função a ser executada se o usuário clicar em "Confirmar" ou "OK".
+ */
+function showConfirmationModal(message, onConfirm) {
+    const modal = $('#confirmationModal');
+    const modalBody = document.getElementById('confirmationModalBody');
+    const confirmBtn = document.getElementById('confirmActionBtn');
+    modalBody.textContent = message;
+    $(confirmBtn).off('click').on('click', () => {
+        modal.modal('hide');
+        onConfirm();
+    });
+    modal.modal('show');
 }
 
 /**

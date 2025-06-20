@@ -1,0 +1,214 @@
+/* Estilos para o contêiner da imagem de fundo */
+.caixa-foto {
+  position: fixed; /* Fixa a imagem na tela */
+  z-index: -1; /* Coloca a imagem atrás de outros elementos */
+  top: 46%; /* Posição vertical */
+  left: 32%; /* Posição horizontal */
+  width: 40%; /* Largura do contêiner */
+  height: 20%; /* Altura do contêiner */
+  display: flex; /* Usa flexbox para centralizar o conteúdo */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+/* Estilos para a imagem dentro do contêiner */
+.caixa-foto img {
+  width: 190%; /* Aumenta a largura da imagem */
+  height: 1000%; /* Aumenta a altura da imagem */
+  object-fit: contain; /* Ajusta a imagem dentro do contêiner, mantendo proporções */
+  margin-top: -10; /* Margem superior negativa (ajuste fino) */
+  object-position: 35% 50%; /* Foca a imagem em uma posição específica */
+  transform: scaleX(1.4); /* Estica horizontalmente (1.4 = 40% a mais) */
+  transform-origin: center; /* Ponto de origem da transformação */
+}
+
+/* Estilos para a máscara que cobre a imagem de fundo */
+.mascara {
+  height: 100%; /* Ocupa 100% da altura do pai */
+  width: 100%; /* Ocupa 100% da largura do pai */
+  position: fixed; /* Fixa a máscara na tela */
+  top: 0; /* Alinha no topo */
+  background: linear-gradient(
+    109deg,
+    rgba(10, 12, 16, 0.99) 15%,
+    rgba(10, 12, 16, 0.7) 50%,
+    rgba(10, 12, 16, 0.99) 85%
+  ); /* Gradiente para efeito de camada opaca */
+}
+
+/* === BOLINHAS (VERSÃO ENTREGÁVEL) === */
+/* Estilos para a seção que contém as bolinhas */
+.section-camada {
+  position: fixed; /* Fixa a seção na tela */
+  width: 100%; /* Ocupa 100% da largura */
+  height: 88vh; /* Ocupa 88% da altura da viewport */
+  margin-top: -50px; /* Compensa o cabeçalho fixo */
+}
+
+/* Estilos para a camada opaca dentro da seção (pode ser sobreposição) */
+.camada-opaca {
+  position: absolute; /* Posição absoluta em relação ao pai */
+  top: 85%; /* Posição vertical */
+  left: 0; /* Posição horizontal */
+  width: 100%; /* Ocupa 100% da largura do pai */
+  height: 100%; /* Ocupa 100% da altura do pai */
+  background: rgba(10, 12, 16, 0.6); /* Fundo semi-transparente */
+}
+
+/* Estilos base para todas as bolinhas clicáveis */
+.bolinha-consultas {
+  display: flex; /* Usa flexbox para organizar conteúdo interno */
+  flex-direction: column; /* Conteúdo em coluna (ícone e texto) */
+  align-items: center; /* Alinha itens verticalmente ao centro */
+  justify-content: center; /* Alinha itens horizontalmente ao centro */
+  width: 120px; /* Largura da bolinha */
+  height: 120px; /* Altura da bolinha */
+  border-radius: 50%; /* Transforma em círculo */
+  border: 7px solid white; /* Borda grossa */
+  background: #5798f2; /* Cor de fundo da bolinha de consultas */
+  text-decoration: none; /* Remove sublinhado do link */
+  color: #010103; /* Cor do texto */
+  transition: all 0.3s ease; /* Transição suave para efeitos de hover */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Sombra da bolinha */
+}
+
+.bolinha-agenda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 7px solid white;
+  background: #8284ed; /* Cor de fundo da bolinha de agenda */
+  text-decoration: none;
+  color: #010103;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.bolinha-equipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 7px solid white;
+  background: #adc1e8; /* Cor de fundo da bolinha de equipe */
+  text-decoration: none;
+  color: #010103;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.bolinha-beneficios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 7px solid white;
+  background: #a6f4a2; /* Cor de fundo da bolinha de benefícios */
+  text-decoration: none;
+  color: #010103;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.bolinha-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 7px solid white;
+  background: #acecf5; /* Cor de fundo da bolinha de feedback */
+  text-decoration: none;
+  color: #010103;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Efeito de hover para todas as bolinhas */
+.bolinha:hover {
+  transform: scale(1.1); /* Aumenta o tamanho da bolinha ao passar o mouse */
+  background: rgba(255, 255, 255, 1); /* Muda o fundo para branco sólido */
+  border-color: #33ff00; /* Muda a cor da borda para azul */
+}
+
+/* Contêiner das bolinhas */
+.bolinhas-container {
+  position: relative; /* Posição relativa */
+  z-index: 2; /* Garante que fique acima da camada opaca */
+  display: flex; /* Usa flexbox para organizar as bolinhas */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  gap: 60px; /* Espaçamento entre as bolinhas */
+  height: 170%; /* Altura do contêiner */
+  flex-wrap: wrap; /* Permite que as bolinhas quebrem para a próxima linha em telas menores */
+}
+
+/* Estilos para a imagem do ícone dentro da bolinha de consultas */
+.bolinha-consultas .icone img {
+  width: 90px; /* Largura do ícone */
+  height: 70px; /* Altura do ícone */
+  margin-top: 20px; /* Margem superior */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+  transition: all 0.3s ease; /* Transição suave para efeitos de hover */
+}
+
+/* Estilos para a imagem do ícone dentro da bolinha de agenda */
+.bolinha-agenda .icone img {
+  width: 100px; /* Largura do ícone */
+  height: 125px; /* Altura do ícone */
+  margin-top: 10px; /* Margem superior */
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para a imagem do ícone dentro da bolinha de equipe */
+.bolinha-equipe .icone img {
+  width: 90px;
+  height: 80px;
+  margin-top: 10px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para a imagem do ícone dentro da bolinha de benefícios */
+.bolinha-beneficios .icone img {
+  width: 100px;
+  height: 120px;
+  margin-top: 10px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para a imagem do ícone dentro da bolinha de feedback */
+.bolinha-feedback .icone img {
+  width: 90px;
+  height: 80px;
+  margin-top: 10px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+/* Estilos para o texto dentro de cada bolinha */
+.bolinha .text {
+  position: absolute; /* Posição absoluta em relação à bolinha */
+  top: calc(50% + 5px); /* Posiciona o texto um pouco abaixo do centro */
+  color: white; /* Cor do texto */
+  font-size: 1.6rem; /* Tamanho da fonte */
+  text-align: center; /* Alinha o texto ao centro */
+  text-transform: uppercase; /* Transforma o texto em maiúsculas */
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8); /* Sombra no texto */
+  margin-top: 80px; /* Margem superior (ajuste fino) */
+  width: 100%; /* Ocupa 100% da largura da bolinha */
+}

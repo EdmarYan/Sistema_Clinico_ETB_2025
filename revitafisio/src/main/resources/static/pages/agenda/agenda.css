@@ -1,32 +1,134 @@
-/* Estilos para os slots de horário (layout de lista) */
+/**
+ * Arquivo: agenda.css
+ * Descrição: Folha de estilo customizada para a página da Agenda.
+ * Define a aparência dos slots de horário, cores de status e layout geral.
+ */
+
+/* ===============================================================
+   ESTILO GERAL DOS SLOTS DE HORÁRIO
+   =============================================================== */
+
+/* Define a aparência base para todos os cards de horário (disponíveis ou ocupados). */
 .slot {
-    border: 1px solid #e3e6f0;
+    border: 1px solid #e3e6f0; /* Borda sutil. */
     padding: 1rem;
     margin-bottom: 1rem;
-    border-radius: 0.35rem;
-    transition: all 0.2s;
+    border-radius: 0.35rem; /* Bordas arredondadas padrão do tema. */
+    transition: all 0.2s;  /* Transição suave para efeitos de hover. */
     font-size: 0.9rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Alinha o conteúdo principal e as ações. */
     align-items: center;
 }
+
+/* ===============================================================
+   ESTILO PARA SLOTS DISPONÍVEIS
+   =============================================================== */
+
+/* Estilo específico para um horário que está vago. */
 .slot-disponivel {
-    background-color: #f8f9fc;
-    color: #1cc88a;
+    background-color: #f8f9fc; /* Fundo claro. */
+    color: #1cc88a; /* Texto verde, indicando positividade. */
+    /* A borda esquerda verde é o principal indicador visual de disponibilidade. */
     border-left: 0.25rem solid #1cc88a !important;
-    cursor: pointer;
+    cursor: pointer; /* Muda o cursor para uma "mãozinha", indicando que é clicável. */
     font-weight: bold;
+    text-align: center; /* Centraliza o texto "Disponível". */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+/* Efeito de hover para dar feedback visual ao usuário quando ele passa o mouse. */
 .slot-disponivel:hover {
-    background-color: #e8f5e9;
-    transform: translateY(-2px);
-    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    background-color: #e8f5e9; /* Fundo verde mais claro. */
+    transform: translateY(-2px); /* Efeito de "levantar" o card. */
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); /* Sombra sutil. */
 }
+
+
+/* ===============================================================
+   ESTILO PARA SLOTS OCUPADOS (AGENDAMENTOS)
+   =============================================================== */
+
+/* Estilo base para um horário que já tem um agendamento. */
 .slot-ocupado {
-    color: white;
-    cursor: pointer;
+    color: white; /* Texto branco para contrastar com os fundos coloridos. */
+    cursor: pointer; /* Indica que se pode clicar para ver detalhes. */
 }
-.status-confirmado { background-color: #4e73df; border-left: 0.25rem solid #2e59d9; }
-.status-realizado { background-color: #1cc88a; border-left: 0.25rem solid #17a673; }
-.status-nao-compareceu { background-color: #858796; border-left: 0.25rem solid #5a5c69; text-decoration: line-through; }
-.status-cancelado { background-color: #e74a3b; border-left: 0.25rem solid #be2617; text-decoration: line-through; }
+
+
+/* ===============================================================
+   CLASSES DE STATUS (COLOR-CODING)
+   Define as cores de fundo e borda para cada status de agendamento.
+   =============================================================== */
+
+/* Agendamento confirmado, mas ainda não realizado. Usa a cor primária do tema. */
+.status-confirmado {
+    background-color: #4e73df;
+    border-left: 0.25rem solid #2e59d9;
+}
+
+/* Agendamento que já foi concluído com sucesso. Usa a cor de sucesso (verde). */
+.status-realizado {
+    background-color: #1cc88a;
+    border-left: 0.25rem solid #17a673;
+}
+
+/* Agendamento em que o paciente não compareceu. Usa uma cor neutra/cinza. */
+.status-nao-compareceu {
+    background-color: #858796;
+    border-left: 0.25rem solid #5a5c69;
+    text-decoration: line-through; /* Risca o texto para indicar que não ocorreu como esperado. */
+}
+
+/* Agendamento que foi cancelado. Usa a cor de perigo (vermelho). */
+.status-cancelado {
+    background-color: #e74a3b;
+    border-left: 0.25rem solid #be2617;
+    text-decoration: line-through;
+}
+
+/* ===============================================================
+   CLASSES DE UTILIDADE DO TEMA (Vindas do seu SB Admin customizado)
+   =============================================================== */
+
+.bg-gradient-primary {
+    background-color: var(--primary);
+    background-image: linear-gradient(180deg, var(--secondary) 10%, var(--primary) 100%);
+}
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+.btn-primary:hover {
+    background-color: #006a80;
+    border-color: #006a80;
+}
+.text-primary, .m-0.font-weight-bold.text-primary {
+    color: var(--primary) !important;
+}
+.border-left-primary {
+    border-left: .25rem solid var(--primary) !important;
+}
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+.btn-secondary:hover {
+    background-color: #00a0bf;
+    border-color: #00a0bf;
+}
+.border-left-success {
+    border-left: .25rem solid #1cc88a !important;
+}
+.text-success {
+    color: #1cc88a !important;
+}
+.border-left-info {
+    border-left: .25rem solid var(--info) !important;
+}
+.text-info {
+    color: var(--info) !important;
+}
+

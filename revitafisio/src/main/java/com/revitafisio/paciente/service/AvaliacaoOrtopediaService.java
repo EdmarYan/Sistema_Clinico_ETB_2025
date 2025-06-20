@@ -2,17 +2,22 @@ package com.revitafisio.paciente.service;
 
 import com.revitafisio.entities.paciente.AvaliacaoOrtopedia;
 import com.revitafisio.entities.usuarios.Paciente;
+import com.revitafisio.exception.BusinessRuleException;
+import com.revitafisio.exception.ResourceNotFoundException;
 import com.revitafisio.paciente.dto.AvaliacaoOrtopediaRequest;
 import com.revitafisio.paciente.repository.AvaliacaoOrtopediaRepository;
 import com.revitafisio.funcionario.repository.FuncionarioRepository;
 import com.revitafisio.paciente.repository.PacienteRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Serviço que encapsula a lógica de negócio para a gestão das
+ * fichas de Avaliação de Ortopedia.
+ */
 @Service
 public class AvaliacaoOrtopediaService {
 
@@ -26,34 +31,50 @@ public class AvaliacaoOrtopediaService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
+    /**
+     * Salva (cria ou atualiza) uma avaliação de ortopedia para um paciente.
+     * Este metodo implementa uma lógica "upsert": se uma avaliação para o paciente
+     * já existir, ela será atualizada; caso contrário, uma nova será criada.
+     *
+     * @param request DTO com os dados da avaliação.
+     * @return A entidade AvaliacaoOrtopedia salva.
+     * @throws ResourceNotFoundException se o paciente ou fisioterapeuta não forem encontrados.
+     * @throws BusinessRuleException se o paciente estiver inativo ou se campos obrigatórios estiverem em branco.
+     */
     @Transactional
     public AvaliacaoOrtopedia salvar(AvaliacaoOrtopediaRequest request) {
-        // Validação do paciente
+        // 1. Validação do Paciente.
+        // Vínculo: Utiliza o PacienteRepository para buscar o paciente.
         Paciente paciente = pacienteRepository.findById(request.idPaciente())
-                .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente com ID " + request.idPaciente() + " não encontrado."));
 
+        // Regra de Negócio: Impede operações em pacientes inativos.
         if (!paciente.isAtivo()) {
-            throw new IllegalStateException("Não é possível salvar avaliação para um paciente inativo.");
+            throw new BusinessRuleException("Não é possível salvar avaliação para um paciente inativo.");
         }
 
-        // Validação do fisioterapeuta
+        // 2. Validação do Fisioterapeuta.
+        // Vínculo: Utiliza o FuncionarioRepository para buscar o fisioterapeuta.
         var fisioterapeuta = funcionarioRepository.findById(request.idFisioterapeuta())
-                .orElseThrow(() -> new EntityNotFoundException("Fisioterapeuta não encontrado."));
+                .orElseThrow(() -> new ResourceNotFoundException("Fisioterapeuta com ID " + request.idFisioterapeuta() + " não encontrado."));
 
-        // Validação de campos obrigatórios
+        // 3. Validação de Campos Essenciais da Avaliação.
         if (request.queixa_principal() == null || request.queixa_principal().isBlank()) {
-            throw new IllegalArgumentException("Queixa principal é obrigatória.");
+            throw new BusinessRuleException("O campo 'Queixa Principal' é obrigatório.");
         }
         if (request.diagnostico_fisioterapeutico() == null || request.diagnostico_fisioterapeutico().isBlank()) {
-            throw new IllegalArgumentException("Diagnóstico fisioterapêutico é obrigatório.");
+            throw new BusinessRuleException("O campo 'Diagnóstico Fisioterapêutico' é obrigatório.");
         }
 
+        // 4. Lógica de "Criar ou Atualizar" (Upsert).
+        // Busca uma avaliação existente para o paciente. Se não encontrar, cria uma nova instância.
         AvaliacaoOrtopedia avaliacao = avaliacaoRepository.findByPacienteIdUsuario(request.idPaciente())
                 .orElse(new AvaliacaoOrtopedia());
 
-        // Mapeamento completo dos campos
+        // 5. Mapeamento completo dos dados do DTO para a Entidade.
         avaliacao.setPaciente(paciente);
         avaliacao.setFisioterapeuta(fisioterapeuta);
+        // Garante que a data da avaliação seja definida apenas na criação.
         if (avaliacao.getDataAvaliacao() == null) {
             avaliacao.setDataAvaliacao(LocalDate.now());
         }
@@ -75,11 +96,18 @@ public class AvaliacaoOrtopediaService {
         avaliacao.setFrequencia_respiratoria(request.frequencia_respiratoria());
         avaliacao.setTemperatura(request.temperatura());
 
+        // 6. Persiste a entidade no banco de dados e a retorna.
         return avaliacaoRepository.save(avaliacao);
     }
 
+    /**
+     * Busca a avaliação de ortopedia de um paciente específico pelo ID do paciente.
+     * @param idPaciente O ID do paciente.
+     * @return um Optional contendo a AvaliacaoOrtopedia se encontrada, ou um Optional vazio.
+     */
     @Transactional(readOnly = true)
     public Optional<AvaliacaoOrtopedia> buscarPorPaciente(Integer idPaciente) {
+        // Vínculo: Chama o metodo de busca customizado definido no AvaliacaoOrtopediaRepository.
         return avaliacaoRepository.findByPacienteIdUsuario(idPaciente);
     }
 }

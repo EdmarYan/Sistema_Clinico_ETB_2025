@@ -1,0 +1,411 @@
+/* VARIÁVEIS DE CORES */
+:root {
+  --primary: #00849f;
+  --secondary: #00b4d8;
+  --light-blue: #90e0ef;
+  --light: #f8f9fa;
+  --dark: #212529;
+  --gray: #6c757d;
+  --light-gray: #dbe4f0;
+  --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
+}
+
+/* RESET E ESTILOS GERAIS */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  color: var(--dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* SEÇÃO HERO SOMENTE COM UMA FOTO ESTÁTICA */
+.about-hero {
+  position: relative;
+  height: 70vh; /* Altura da seção hero */
+  overflow: hidden;
+  display: flex; /* Para centralizar a imagem */
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-static-image-only {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra o espaço */
+  filter: brightness(0.8); /* Um leve escurecimento para a imagem do hero */
+}
+
+/* SEÇÃO SOBRE A CLÍNICA */
+.about-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 2.5rem; /* Tamanho da fonte ajustado */
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 80px; /* Largura ajustada */
+  height: 4px;
+  background: var(--secondary);
+  margin: 0 auto;
+}
+
+.about-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem; /* Espaçamento aumentado */
+  align-items: center;
+  margin-bottom: 4rem;
+  padding: 1rem; /* Adicionado preenchimento para melhor espaçamento */
+  border-radius: 8px; /* Adicionado raio de borda */
+  background-color: var(--light-gray); /* Adicionado um fundo claro */
+}
+
+.about-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.about-text p {
+  font-size: 1.4rem; /* AQUI ESTÁ O TAMANHO DA FONTE DOS TEXTOS */
+  margin-bottom: 1.5rem;
+  color: black;
+  line-height: 1.9; /* Altura da linha melhorada para legibilidade */
+}
+
+/* Estilos para o novo slider de imagens dentro da seção "Sobre a Clínica" */
+.about-image-slider {
+  flex: 1;
+  min-width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra suavizada */
+  position: relative; /* Necessário para posicionar setas e dots */
+}
+
+.about-image-slider img {
+  width: 100%;
+  height: 390px; /* Altura fixa para as imagens do slider */
+  object-fit: cover;
+  display: block;
+}
+
+/* Estilos para setas de navegação do Slick Carousel no slider de imagens */
+.about-image-slider .slick-prev,
+.about-image-slider .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente para as setas */
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.about-image-slider .slick-prev:before,
+.about-image-slider .slick-next:before {
+  font-family: "Font Awesome 5 Free"; /* Ou "Font Awesome 6 Free" se estiver usando FA6 */
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.about-image-slider .slick-prev {
+  left: 10px;
+}
+
+.about-image-slider .slick-prev:before {
+  content: "\f053"; /* Ícone de seta para a esquerda (chevron-left) */
+}
+
+.about-image-slider .slick-next {
+  right: 10px;
+}
+
+.about-image-slider .slick-next:before {
+  content: "\f054"; /* Ícone de seta para a direita (chevron-right) */
+}
+
+/* Estilos para os dots (bolinhas) do Slick Carousel no slider de imagens */
+.about-image-slider .slick-dots {
+  position: absolute;
+  bottom: 10px;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  z-index: 10;
+}
+
+.about-image-slider .slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin: 0 4px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.about-image-slider .slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 15px;
+  height: 15px;
+  padding: 5px;
+  cursor: pointer;
+  color: transparent;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+
+.about-image-slider .slick-dots li button:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px; /* Tamanho menor para os dots */
+  height: 8px;
+  content: "";
+  border-radius: 50%;
+  text-align: center;
+  opacity: 0.75;
+  color: var(--light-blue); /* Cor dos dots */
+  background: var(--light-blue);
+}
+
+.about-image-slider .slick-dots li.slick-active button:before {
+  opacity: 1;
+  background: var(--primary); /* Cor do dot ativo */
+}
+
+/* SEÇÃO EQUIPE */
+.team-section {
+  background-color: var(--light);
+  padding: 5rem 2rem;
+}
+
+.team-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 1fr)
+  ); /* Cards ligeiramente mais largos */
+  gap: 2.5rem; /* Espaçamento aumentado */
+  margin-top: 3rem;
+}
+
+.team-member {
+  background: white;
+  border-radius: 12px; /* Ligeiramente mais arredondado */
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); /* Sombra refinada */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-8px); /* Elevação ligeiramente menor */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18); /* Sombra aprimorada no hover */
+}
+
+.member-image {
+  height: 290px; /* Altura da imagem ajustada */
+  overflow: hidden;
+}
+
+.member-image img {
+  width: 100%;
+  height: 140%;
+  object-fit: cover;
+  transition: transform 0.4s ease-in-out;
+}
+
+.team-member:hover .member-image img {
+  transform: scale(1.08); /* Zoom sutil na imagem ao passar o mouse */
+}
+
+.member-info {
+  padding: 1.75rem; /* Preenchimento ajustado */
+  text-align: center;
+}
+
+.member-info h3 {
+  margin-bottom: 0.3rem; /* Margem reduzida */
+  color: var(--primary);
+  font-size: 1.4rem; /* Tamanho da fonte ajustado */
+}
+
+.member-info .specialty {
+  color: var(--secondary);
+  font-weight: 500; /* Peso da fonte ligeiramente mais claro */
+  margin-bottom: 1.2rem; /* Margem ajustada */
+  font-size: 0.95rem; /* Tamanho da fonte ajustado */
+}
+
+.member-social {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem; /* Espaçamento ajustado */
+}
+
+.member-social a {
+  color: var(--gray);
+  transition: color 0.3s ease;
+  font-size: 1.1rem; /* Tamanho do ícone ajustado */
+}
+
+.member-social a:hover {
+  color: var(--secondary);
+}
+
+/* SEÇÃO VALORES */
+.values-section {
+  background-color: var(--primary);
+  color: white;
+  padding: 5rem 2rem;
+}
+
+.values-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.value-card {
+  background: rgba(255, 255, 255, 0.15); /* Ligeiramente menos transparente */
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Adicionada transição de background */
+}
+
+.value-card:hover {
+  transform: translateY(-8px); /* Elevação ajustada ao passar o mouse */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
+  ); /* Ligeiramente mais escuro ao passar o mouse */
+}
+
+.value-icon {
+  font-size: 2.5rem; /* Tamanho do ícone ajustado */
+  margin-bottom: 1rem; /* Margem ajustada */
+  color: var(--light-blue);
+}
+
+.value-card h3 {
+  color: white;
+  margin-bottom: 0.8rem; /* Margem ajustada */
+  font-size: 1.3rem; /* Tamanho da fonte ajustado */
+}
+
+.value-card p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+  line-height: 1.7; /* Legibilidade aprimorada */
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .about-hero {
+    height: auto; /* Ajusta a altura do hero para telas menores */
+  }
+
+  .hero-static-image-only {
+    min-height: 300px; /* Garante uma altura mínima para a imagem do hero em mobile */
+  }
+
+  .slide-content h1 {
+    /* Removido pois não existe mais no hero */
+    font-size: 2rem;
+  }
+
+  .slide-content p {
+    /* Removido pois não existe mais no hero */
+    font-size: 1rem;
+  }
+
+  .section-title h2 {
+    font-size: 1.8rem;
+  }
+
+  .about-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* No mobile, as imagens do slider de baixo podem se adaptar */
+  .about-image-slider {
+    order: -1; /* Mantém a imagem acima do texto em telas pequenas */
+  }
+  .about-image-slider img {
+    height: auto; /* Deixa a altura se ajustar automaticamente */
+    min-height: 250px; /* Garante uma altura mínima */
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* ESTILO PARA CONTEÚDO REVERTIDO EM DISPOSITIVOS MÓVEIS */
+.reverse {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  .reverse {
+    flex-direction: column;
+  }
+}

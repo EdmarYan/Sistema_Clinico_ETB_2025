@@ -1,0 +1,32 @@
+/* Estilos para os slots de horário (layout de lista) */
+.slot {
+    border: 1px solid #e3e6f0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.35rem;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.slot-disponivel {
+    background-color: #f8f9fc;
+    color: #1cc88a;
+    border-left: 0.25rem solid #1cc88a !important;
+    cursor: pointer;
+    font-weight: bold;
+}
+.slot-disponivel:hover {
+    background-color: #e8f5e9;
+    transform: translateY(-2px);
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+.slot-ocupado {
+    color: white;
+    cursor: pointer;
+}
+.status-confirmado { background-color: #4e73df; border-left: 0.25rem solid #2e59d9; }
+.status-realizado { background-color: #1cc88a; border-left: 0.25rem solid #17a673; }
+.status-nao-compareceu { background-color: #858796; border-left: 0.25rem solid #5a5c69; text-decoration: line-through; }
+.status-cancelado { background-color: #e74a3b; border-left: 0.25rem solid #be2617; text-decoration: line-through; }
