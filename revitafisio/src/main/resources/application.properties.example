@@ -1,0 +1,21 @@
+# =====================================================================
+# EXEMPLO de configuracao local do RevitaFisio.
+# Copie este arquivo para "application.properties" (mesma pasta) e
+# ajuste usuario/senha para o seu ambiente. O arquivo real
+# "application.properties" NAO deve ser commitado (esta no .gitignore).
+# =====================================================================
+
+# Ajuste host/porta/usuario/senha para o seu MySQL local (Docker ou nao)
+spring.datasource.url=jdbc:mysql://localhost:3306/revitafisio?useSSL=false&serverTimezone=America/Sao_Paulo
+spring.datasource.username=SEU_USUARIO_MYSQL
+spring.datasource.password=SUA_SENHA_MYSQL
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# 'validate' confere se as @Entity batem com o schema existente (nao altera nada).
+# Use 'update' se quiser que o Hibernate crie/ajuste tabelas automaticamente
+# em ambiente de desenvolvimento (nao recomendado em producao).
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+server.port=8080
