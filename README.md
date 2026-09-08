@@ -102,4 +102,4 @@ O login padrão gerado pelo seed é:
 ## Autor
 
 **Edmar Yan** — Técnico em Informática (ETB, 2025)
-[GitHub](https://github.com/EdmarYan) | [LinkedIn](https://www.linkedin.com/in/edmaryan/)
+[GitHub](https://github.com/EdmarYan) | [LinkedIn](https://www.linkedin.com/in/edmar-yan-faria-de-melo/)
