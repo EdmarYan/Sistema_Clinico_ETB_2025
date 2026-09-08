@@ -19,3 +19,10 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
 server.port=8080
+
+# ---- JWT (JSON Web Token) ----
+# Chave secreta para assinar os tokens. DEVE ter pelo menos 32 caracteres.
+# Em producao, use uma chave forte e variavel de ambiente.
+jwt.secret=SUA_CHAVE_SECRETA_COM_32_CHARS_OU_MAIS
+# Tempo de vida do token em milissegundos (86400000 = 24 horas).
+jwt.expiration-ms=86400000

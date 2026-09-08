@@ -161,7 +161,7 @@ async function buscarPacientesNaApi(url) {
     tbody.innerHTML = '<tr><td colspan="3" class="text-center">Buscando...</td></tr>'; // Feedback de carregamento.
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error(`Erro na requisição: ${response.statusText}`);
 
         const pacientes = await response.json();

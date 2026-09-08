@@ -79,8 +79,16 @@ async function renderizarSlotsDoDia() {
     try {
         // Otimização: Dispara as duas requisições para a API em paralelo usando Promise.all.
         const [horariosRes, agendamentosRes] = await Promise.all([
-            fetch(`/horarios-disponiveis?idFisioterapeuta=${fisioId}&start=${dataSelecionada}&end=${dataSelecionada}`),
-            fetch(`/agendamentos?idFisioterapeuta=${fisioId}&inicio=${dataSelecionada}T00:00:00&fim=${dataSelecionada}T23:59:59`)
+            fetch(`/horarios-disponiveis?idFisioterapeuta=${fisioId}&start=${dataSelecionada}&end=${dataSelecionada}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }),
+            fetch(`/agendamentos?idFisioterapeuta=${fisioId}&inicio=${dataSelecionada}T00:00:00&fim=${dataSelecionada}T23:59:59`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
         ]);
 
         if (!horariosRes.ok || !agendamentosRes.ok) throw new Error('Falha ao buscar dados da agenda.');
@@ -286,7 +294,10 @@ async function confirmarAgendamento() {
     try {
         const response = await fetch('/agendamentos', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(requestBody)
         });
 
@@ -324,7 +335,7 @@ async function confirmarAgendamento() {
 async function atualizarStatus(agendamentoId, novoStatus) {
     if (!confirm(`Tem certeza que deseja marcar esta consulta como "${novoStatus.replace('_', ' ')}"?`)) return;
     try {
-        const response = await fetch(`/agendamentos/${agendamentoId}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ novoStatus: novoStatus.toUpperCase() }) });
+        const response = await fetch(`/agendamentos/${agendamentoId}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` }, body: JSON.stringify({ novoStatus: novoStatus.toUpperCase() }) });
         if (!response.ok) throw new Error('Falha ao atualizar o status.');
         renderizarSlotsDoDia(); // Atualiza a agenda para refletir a mudança de status.
     } catch (error) {
@@ -336,9 +347,9 @@ async function atualizarStatus(agendamentoId, novoStatus) {
 // FUNÇÕES DE CARREGAMENTO DE DADOS INICIAIS
 // ===============================================================
 async function carregarDadosIniciais() { await Promise.all([carregarFisioterapeutas(), carregarPacientes(), carregarEspecialidades()]); }
-async function carregarFisioterapeutas() { try { const r = await fetch('/funcionarios'); const d = await r.json(); const s = document.getElementById('fisioterapeutaSelect'); s.innerHTML = '<option value="">Selecione...</option>'; d.filter(f => f.tipo === 'FISIOTERAPEUTA' && f.ativo).forEach(f => s.add(new Option(f.nome, f.id))); } catch (e) { console.error('Erro ao carregar Fisioterapeutas:', e); } }
-async function carregarPacientes() { try { const r = await fetch('/pacientes'); todosPacientes = await r.json(); } catch (e) { console.error('Erro ao carregar Pacientes:', e); } }
-async function carregarEspecialidades() { try { const r = await fetch('/especialidades'); todasEspecialidades = await r.json(); } catch (e) { console.error('Erro ao carregar Especialidades:', e); } }
+async function carregarFisioterapeutas() { try { const r = await fetch('/funcionarios', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }); const d = await r.json(); const s = document.getElementById('fisioterapeutaSelect'); s.innerHTML = '<option value="">Selecione...</option>'; d.filter(f => f.tipo === 'FISIOTERAPEUTA' && f.ativo).forEach(f => s.add(new Option(f.nome, f.id))); } catch (e) { console.error('Erro ao carregar Fisioterapeutas:', e); } }
+async function carregarPacientes() { try { const r = await fetch('/pacientes', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }); todosPacientes = await r.json(); } catch (e) { console.error('Erro ao carregar Pacientes:', e); } }
+async function carregarEspecialidades() { try { const r = await fetch('/especialidades', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }); todasEspecialidades = await r.json(); } catch (e) { console.error('Erro ao carregar Especialidades:', e); } }
 
 // ===============================================================
 // FUNÇÕES DE RENDERIZAÇÃO DA INTERFACE BÁSICA (SIDEBAR, ETC.)

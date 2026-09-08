@@ -53,7 +53,7 @@ function renderizarSidebar() {
  */
 async function carregarDados() {
     try {
-        const pacienteResponse = await fetch(`/pacientes/${pacienteId}`);
+        const pacienteResponse = await fetch(`/pacientes/${pacienteId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         const paciente = await pacienteResponse.json();
         document.getElementById('nomePaciente').textContent = paciente.nome;
     } catch (e) {
@@ -62,7 +62,7 @@ async function carregarDados() {
     }
 
     try {
-        const avaliacaoResponse = await fetch(`/avaliacoes/rpg/paciente/${pacienteId}`);
+        const avaliacaoResponse = await fetch(`/avaliacoes/rpg/paciente/${pacienteId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (avaliacaoResponse.ok) {
             const data = await avaliacaoResponse.json();
             preencherFormulario(data); // Chama a função para popular o formulário.
@@ -136,7 +136,10 @@ async function salvar(event) {
         // Envia a requisição POST para o backend.
         const response = await fetch('/avaliacoes/rpg', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(data)
         });
 

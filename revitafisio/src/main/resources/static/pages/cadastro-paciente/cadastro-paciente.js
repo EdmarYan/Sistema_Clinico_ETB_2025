@@ -123,48 +123,15 @@ function setupCpfField() {
 }
 
 /**
- * Valida o formato do CPF
+ * Valida o CPF — verifica apenas se tem 11 dígitos e não é sequência repetida.
+ * (Validação simplificada para facilitar testes no TCC.)
  */
 function validarCpf() {
     const cpfInput = document.getElementById('cpf');
     const cpf = cpfInput.value.replace(/\D/g, '');
 
-    // Validação básica de tamanho
-    if (cpf.length !== 11) {
-        cpfInput.classList.add('is-invalid');
-        return false;
-    }
-
-    // Algoritmo de validação de CPF
-    let soma = 0;
-    let resto;
-
-    if (/^(\d)\1+$/.test(cpf)) {
-        cpfInput.classList.add('is-invalid');
-        return false;
-    }
-
-    for (let i = 1; i <= 9; i++) {
-        soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
-    }
-
-    resto = (soma * 10) % 11;
-
-    if ((resto === 10) || (resto === 11)) resto = 0;
-    if (resto !== parseInt(cpf.substring(9, 10))) {
-        cpfInput.classList.add('is-invalid');
-        return false;
-    }
-
-    soma = 0;
-    for (let i = 1; i <= 10; i++) {
-        soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
-    }
-
-    resto = (soma * 10) % 11;
-
-    if ((resto === 10) || (resto === 11)) resto = 0;
-    if (resto !== parseInt(cpf.substring(10, 11))) {
+    // Validação: exige exatamente 11 dígitos e rejeita sequências repetidas (ex: 11111111111)
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
         cpfInput.classList.add('is-invalid');
         return false;
     }

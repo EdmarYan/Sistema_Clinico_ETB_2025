@@ -12,6 +12,7 @@ import com.revitafisio.paciente.dto.PacienteDetalhesResponse;
 import com.revitafisio.paciente.dto.PacienteResponse;
 import com.revitafisio.paciente.repository.PacienteRepository;
 import com.revitafisio.entities.usuarios.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,10 +30,13 @@ public class PacienteService {
 
     private final UsuarioRepository usuarioRepository;
     private final PacienteRepository pacienteRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public PacienteService(UsuarioRepository usuarioRepository, PacienteRepository pacienteRepository) {
+    public PacienteService(UsuarioRepository usuarioRepository, PacienteRepository pacienteRepository,
+                           PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.pacienteRepository = pacienteRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -56,8 +60,9 @@ public class PacienteService {
 
         // Solução de Design: Como pacientes não fazem login, o campo 'senha' (que é obrigatório
         // na entidade Usuario) recebe um valor aleatório e único para satisfazer a restrição
-        // do banco de dados, sem armazenar uma senha real ou nula.
-        novoPaciente.setSenha(UUID.randomUUID().toString());
+        // do banco de dados, sem armazenar uma senha real ou nula. Ainda assim, passa pelo
+        // mesmo hash BCrypt dos demais usuários, por consistência (nunca fica texto plano no banco).
+        novoPaciente.setSenha(passwordEncoder.encode(UUID.randomUUID().toString()));
 
         // Processa e associa a lista de contatos, se houver.
         if (request.contatos() != null) {

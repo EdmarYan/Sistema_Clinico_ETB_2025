@@ -1,4 +1,4 @@
-package com.revitafisio.paciente.Controller;
+package com.revitafisio.paciente.controller;
 
 import com.revitafisio.entities.paciente.AvaliacaoRpg;
 import com.revitafisio.paciente.dto.AvaliacaoRpgRequest;

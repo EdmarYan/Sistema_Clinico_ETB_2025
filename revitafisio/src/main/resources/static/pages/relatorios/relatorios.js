@@ -63,7 +63,7 @@ async function gerarRelatorio() {
     corpoTabela.innerHTML = '';
 
     try {
-        const response = await fetch(`/relatorios/atendimentos-mensal?ano=${ano}&mes=${mes}`);
+        const response = await fetch(`/relatorios/atendimentos-mensal?ano=${ano}&mes=${mes}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error('Falha ao gerar o relatório.');
         const dados = await response.json();
         tituloRelatorio.classList.remove('d-none');

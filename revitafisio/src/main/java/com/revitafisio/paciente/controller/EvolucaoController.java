@@ -1,4 +1,4 @@
-package com.revitafisio.paciente.Controller;
+package com.revitafisio.paciente.controller;
 
 import com.revitafisio.paciente.dto.EvolucaoResponse;
 import com.revitafisio.funcionario.dto.CriarEvolucaoRequest;

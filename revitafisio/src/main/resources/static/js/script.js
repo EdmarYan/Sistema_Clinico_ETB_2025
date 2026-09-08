@@ -117,6 +117,9 @@ async function fazerLogin() {
             const dadosUsuario = await response.json();
             // Salva os dados do usuário no localStorage para manter a sessão.
             localStorage.setItem('usuarioLogado', JSON.stringify(dadosUsuario));
+            // Salva o token JWT separadamente para facilitar o envio no header
+            // Authorization de cada requisição da API (formato: "Bearer <token>").
+            localStorage.setItem('token', dadosUsuario.token);
             window.location.href = 'pages/dashboard/dashboard.html'; // Redireciona para o painel.
 
         } else { // Status HTTP de erro (4xx ou 5xx).

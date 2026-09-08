@@ -61,7 +61,7 @@ function renderizarSidebar(tipoUsuario) {
 async function carregarDados() {
     // Busca e preenche o nome do paciente.
     try {
-        const pacienteResponse = await fetch(`/pacientes/${pacienteId}`);
+        const pacienteResponse = await fetch(`/pacientes/${pacienteId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         const paciente = await pacienteResponse.json();
         document.getElementById('nomePaciente').textContent = paciente.nome;
     } catch(e) {
@@ -71,7 +71,7 @@ async function carregarDados() {
 
     // Busca a avaliação de ortopedia. Se existir, preenche o formulário.
     try {
-        const avaliacaoResponse = await fetch(`/avaliacoes/ortopedia/paciente/${pacienteId}`);
+        const avaliacaoResponse = await fetch(`/avaliacoes/ortopedia/paciente/${pacienteId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (avaliacaoResponse.ok) {
             const data = await avaliacaoResponse.json();
             // Loop inteligente que preenche cada campo do formulário cujo 'id'
@@ -116,7 +116,10 @@ async function salvar(event) {
         // Envia a requisição POST para o backend.
         const response = await fetch('/avaliacoes/ortopedia', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(data)
         });
 

@@ -11,9 +11,13 @@ package com.revitafisio.auth.dto;
  * @param nome O nome do usuário, para ser exibido na interface.
  * @param tipoUsuario O tipo de usuário (ex: "ADMIN", "FISIOTERAPEUTA"), para que o frontend
  * possa renderizar o menu e as funcionalidades corretas para aquele perfil.
+ * @param token Token JWT assinado, representando a sessão do usuário. Por enquanto,
+ * o front-end pode guardar esse valor, mas nenhum endpoint ainda exige ele
+ * para responder -- é preparação para a próxima etapa (autorização por token).
  */
 public record AuthResponse(
         Integer usuarioId,
         String nome,
-        String tipoUsuario
+        String tipoUsuario,
+        String token
 ) {}

@@ -30,10 +30,13 @@
 		</dependency>
 
 
-		<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+		<!-- Spring Security — habilita o pipeline de segurança HTTP completo:
+		     SecurityFilterChain, filtros de autenticação, controle de acesso por rota.
+		     Sem esta dependência, só tínhamos spring-security-crypto (hash BCrypt). -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -59,11 +62,36 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.security</groupId>-->
-<!--			<artifactId>spring-security-test</artifactId>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<!-- Adicionado para hash de senha (BCrypt), sem habilitar o
+             Spring Security completo (que travaria todos os endpoints
+             com login HTTP Basic por padrao). Traz apenas as classes de
+             criptografia, como BCryptPasswordEncoder. -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+
+		<!-- JJWT — biblioteca para gerar e validar tokens JWT (JSON Web Token).
+             jjwt-api: interfaces publicas (Jwts, Claims, etc.)
+             jjwt-impl + jjwt-jackson: implementacao + serializacao JSON,
+             necessarios em runtime mas nao expostos no codigo da aplicacao. -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.6</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

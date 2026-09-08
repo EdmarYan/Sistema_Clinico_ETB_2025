@@ -98,7 +98,7 @@ async function carregarHorarios() {
     loadingEl.style.display = 'block';
     listaEl.innerHTML = '';
     try {
-        const response = await fetch(`/horarios-trabalho/fisioterapeuta/${usuarioLogado.usuarioId}`);
+        const response = await fetch(`/horarios-trabalho/fisioterapeuta/${usuarioLogado.usuarioId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error('Falha ao carregar horários.');
         const horarios = await response.json();
         if (horarios.length === 0) {
@@ -136,12 +136,22 @@ async function adicionarHorario(event) {
     try {
         const response = await fetch('/horarios-trabalho', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(requestBody)
         });
         if(!response.ok) {
-            const erro = await response.json();
-            throw new Error(erro.message || 'Não foi possível adicionar o horário.');
+            let errorMessage = 'Não foi possível adicionar o horário.';
+            try {
+                const erro = await response.json();
+                errorMessage = erro.message || errorMessage;
+            } catch(e) {
+                // If it's a 403/401 and doesn't have a JSON body
+                errorMessage = `Erro HTTP ${response.status}: Acesso Negado ou requisição inválida.`;
+            }
+            throw new Error(errorMessage);
         }
         await carregarHorarios();
         document.getElementById('formNovoHorario').reset();
@@ -161,7 +171,7 @@ async function adicionarHorario(event) {
 function removerHorario(id) {
     showConfirmationModal('Tem certeza que deseja remover este horário da sua grade?', async () => {
         try {
-            const response = await fetch(`/horarios-trabalho/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/horarios-trabalho/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao remover o horário.');
             document.getElementById(`horario-${id}`).remove();
             const listaEl = document.getElementById('listaHorarios');
@@ -206,7 +216,8 @@ function gerarAgenda() {
 
             try {
                 const response = await fetch(`/horarios-trabalho/gerar-disponibilidade?idFisioterapeuta=${usuarioLogado.usuarioId}&ano=${ano}&mes=${mes}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
                 });
 
                 if (!response.ok) {

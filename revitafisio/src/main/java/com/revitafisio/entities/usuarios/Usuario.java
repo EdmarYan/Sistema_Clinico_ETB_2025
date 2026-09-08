@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import com.revitafisio.entities.permissoes.Cargo;
 
 /**
  * Classe Abstrata de Usuário.
@@ -122,9 +123,23 @@ public abstract class Usuario {
     private Set<Contato> contatos;
 
     /**
+     * Conjunto de cargos atribuídos ao usuário (ex: um usuário pode ser Fisioterapeuta e Gestor).
+     * O mapeamento é feito via tabela intermediária 'usuario_cargo' conforme o DDL.
+     */
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_cargo",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_cargo")
+    )
+    private Set<Cargo> cargos;
+
+    /**
      * Campo que controla o status do usuário (ativo ou inativo).
      * Um usuário inativo não pode fazer login ou ser usado em novas operações.
      * O valor padrão é 'true' (ativo).
      */
     private boolean ativo = true;
 }
+

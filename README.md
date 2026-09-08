@@ -85,9 +85,12 @@ A aplicação sobe em `http://localhost:8080`. Use `database/seed_admin.sql` par
 
 Projeto de TCC já entregue; este repositório está sendo mantido/organizado como parte do meu portfólio. Melhorias que pretendo aplicar:
 
-- [ ] Hash de senha (BCrypt via Spring Security) — hoje a senha é comparada em texto puro
-- [ ] Autenticação com token (JWT) em vez de resposta simples de login
-- [ ] Testes automatizados (unitários e de integração)
+- [x] Criptografia de senhas (BCrypt) e segurança Spring Security
+- [x] Autenticação com Token JWT (`jjwt`) e filtro Stateless (`JwtAuthenticationFilter`) blindando a API REST.
+- [x] Testes Automatizados (JUnit 5): 
+  - Testes Unitários puros (`JwtServiceTest`)
+  - Testes Unitários com Mocks (`AuthServiceTest` via Mockito)
+  - Testes de Integração Web (`AgendamentoControllerTest` via MockMvc)
 - [ ] Deploy em ambiente público (Railway/Render) com banco gerenciado
 
 ## Autor

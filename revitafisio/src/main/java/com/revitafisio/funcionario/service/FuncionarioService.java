@@ -13,6 +13,7 @@ import com.revitafisio.funcionario.dto.FuncionarioDetalhesResponse;
 import com.revitafisio.funcionario.dto.FuncionarioResponse;
 import com.revitafisio.funcionario.repository.EspecialidadeRepository;
 import com.revitafisio.funcionario.repository.FuncionarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +30,16 @@ public class FuncionarioService {
     private final UsuarioRepository usuarioRepository;
     private final FuncionarioRepository funcionarioRepository;
     private final EspecialidadeRepository especialidadeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public FuncionarioService(UsuarioRepository usuarioRepository,
                               FuncionarioRepository funcionarioRepository,
-                              EspecialidadeRepository especialidadeRepository) {
+                              EspecialidadeRepository especialidadeRepository,
+                              PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.especialidadeRepository = especialidadeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -65,7 +69,8 @@ public class FuncionarioService {
         novoFuncionario.setNome(request.nome());
         novoFuncionario.setCpf(request.cpf());
         novoFuncionario.setDataNascimento(request.dataNascimento());
-        novoFuncionario.setSenha(request.senha()); // Lembrete: A senha deve ser criptografada antes de salvar.
+        // Senha armazenada como hash BCrypt, nunca em texto plano.
+        novoFuncionario.setSenha(passwordEncoder.encode(request.senha()));
         novoFuncionario.setAtivo(true);
 
         var funcionarioSalvo = usuarioRepository.save(novoFuncionario);

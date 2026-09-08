@@ -51,7 +51,7 @@ async function carregarFuncionarios(ativos = true) {
     tbody.innerHTML = `<tr><td colspan="3" class="text-center">Carregando...</td></tr>`;
 
     try {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error('Falha ao carregar funcionários.');
 
         const funcionarios = await response.json();
@@ -95,7 +95,7 @@ async function carregarPacientes(ativos = true) {
     tbody.innerHTML = `<tr><td colspan="3" class="text-center">Carregando...</td></tr>`;
 
     try {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error('Falha ao buscar pacientes.');
 
         const pacientes = await response.json();
@@ -138,7 +138,7 @@ async function carregarPacientes(ativos = true) {
 function inativarFuncionario(id) {
     showConfirmationModal('Tem certeza que deseja inativar este funcionário?', async () => {
         try {
-            const response = await fetch(`/funcionarios/${id}/inativar`, { method: 'PATCH' });
+            const response = await fetch(`/funcionarios/${id}/inativar`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao inativar funcionário.');
             carregarFuncionarios(true);
         } catch (error) {
@@ -154,7 +154,7 @@ function inativarFuncionario(id) {
 function ativarFuncionario(id) {
     showConfirmationModal('Tem certeza que deseja reativar este funcionário?', async () => {
         try {
-            const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH' });
+            const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao reativar funcionário.');
             carregarFuncionarios(false);
         } catch (error) {
@@ -170,7 +170,7 @@ function ativarFuncionario(id) {
 function inativarPaciente(id) {
     showConfirmationModal('Tem certeza que deseja inativar este paciente?', async () => {
         try {
-            const response = await fetch(`/pacientes/${id}/inativar`, { method: 'PATCH' });
+            const response = await fetch(`/pacientes/${id}/inativar`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao inativar paciente.');
             carregarPacientes(true);
         } catch (error) {
@@ -186,7 +186,7 @@ function inativarPaciente(id) {
 function ativarPaciente(id) {
     showConfirmationModal('Tem certeza que deseja reativar este paciente?', async () => {
         try {
-            const response = await fetch(`/pacientes/${id}/ativar`, { method: 'PATCH' });
+            const response = await fetch(`/pacientes/${id}/ativar`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao reativar paciente.');
             carregarPacientes(false);
         } catch (error) {

@@ -168,7 +168,7 @@ async function carregarDadosFuncionario(id) {
     detailsContainer.classList.add('d-none');
 
     try {
-        const response = await fetch(`/funcionarios/${id}`);
+        const response = await fetch(`/funcionarios/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if (!response.ok) throw new Error('Funcionário não encontrado.');
 
         funcionarioAtual = await response.json();
@@ -188,7 +188,7 @@ async function carregarDadosFuncionario(id) {
  */
 async function carregarTodasEspecialidades() {
     try {
-        const response = await fetch('/especialidades');
+        const response = await fetch('/especialidades', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
         if(!response.ok) throw new Error('Falha ao carregar especialidades');
         todasEspecialidades = await response.json();
     } catch (error) {
@@ -207,7 +207,10 @@ async function salvarAlteracoes() {
     try {
         const response = await fetch(`/funcionarios/${funcionarioId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(dadosParaAtualizar)
         });
         if (!response.ok) throw new Error('Falha ao atualizar o funcionário.');
@@ -230,7 +233,7 @@ function inativarFuncionario(id) {
         try {
             // Nota: O endpoint original de inativação era DELETE. A boa prática é usar PATCH.
             // Para manter a compatibilidade com o seu controller atual, mantemos DELETE por enquanto.
-            const response = await fetch(`/funcionarios/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/funcionarios/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao inativar o funcionário.');
 
             showConfirmationModal('Funcionário inativado com sucesso!', () => {
@@ -250,7 +253,7 @@ function inativarFuncionario(id) {
 function ativarFuncionario(id) {
     showConfirmationModal('Tem certeza que deseja REATIVAR este funcionário?', async () => {
         try {
-            const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH' });
+            const response = await fetch(`/funcionarios/${id}/ativar`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
             if (!response.ok) throw new Error('Falha ao reativar o funcionário.');
 
             showConfirmationModal('Funcionário reativado com sucesso!', () => {
@@ -276,7 +279,10 @@ async function salvarEspecialidades() {
     try {
         const response = await fetch(`/funcionarios/${funcionarioId}/especialidades`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(idsSelecionados)
         });
         if (!response.ok) throw new Error('Falha ao atualizar especialidades.');

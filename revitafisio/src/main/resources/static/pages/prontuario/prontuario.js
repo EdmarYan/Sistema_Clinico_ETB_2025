@@ -297,7 +297,7 @@ async function carregarDadosPaciente(id) {
     try {
         mostrarLoading();
 
-        const response = await fetch(`/pacientes/${id}`);
+        const response = await fetch(`/pacientes/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -332,7 +332,7 @@ async function carregarEvolucoes(idPaciente) {
         const historicoDiv = document.getElementById('historicoEvolucoes');
         historicoDiv.innerHTML = '<div class="text-center"><div class="spinner-border spinner-border-sm"></div></div>';
 
-        const response = await fetch(`/evolucoes/paciente/${idPaciente}`);
+        const response = await fetch(`/evolucoes/paciente/${idPaciente}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
 
         if (!response.ok) {
             throw new Error('Falha ao carregar evoluções');
@@ -375,8 +375,8 @@ async function carregarEvolucoes(idPaciente) {
 async function carregarStatusAvaliacoes(idPaciente) {
     try {
         const [resOrto, resRpg] = await Promise.all([
-            fetch(`/avaliacoes/ortopedia/paciente/${idPaciente}`),
-            fetch(`/avaliacoes/rpg/paciente/${idPaciente}`)
+            fetch(`/avaliacoes/ortopedia/paciente/${idPaciente}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+            fetch(`/avaliacoes/rpg/paciente/${idPaciente}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
         ]);
 
         const containerOrto = document.getElementById('container-avaliacao-ortopedia');
@@ -464,7 +464,10 @@ async function salvarEvolucao() {
 
         const response = await fetch('/evolucoes', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(requestBody)
         });
 
@@ -519,7 +522,10 @@ async function salvarAlteracoes(pacienteId) {
 
         const response = await fetch(`/pacientes/${pacienteId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify(dadosParaAtualizar)
         });
 
@@ -549,7 +555,8 @@ async function inativarPaciente(id) {
         if (!confirm("Tem certeza que deseja inativar este paciente?")) return;
 
         const response = await fetch(`/pacientes/${id}/inativar`, {
-            method: 'PATCH'
+            method: 'PATCH',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
 
         if (!response.ok) {
@@ -577,7 +584,8 @@ async function ativarPaciente(id) {
         if (!confirm("Tem certeza que deseja reativar este paciente?")) return;
 
         const response = await fetch(`/pacientes/${id}/ativar`, {
-            method: 'PATCH'
+            method: 'PATCH',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
 
         if (!response.ok) {
