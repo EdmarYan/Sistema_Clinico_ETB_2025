@@ -48,11 +48,23 @@ Modelagem do banco: 15 tabelas, com herança de usuários em tabela única (`usu
 - Gestão de equipe: cargos, permissões e vínculo fisioterapeuta ↔ especialidade
 - Relatório mensal de atendimentos por fisioterapeuta
 
-## Como rodar localmente
+## Status e Evolução do Projeto
 
-Pré-requisitos: JDK 21, Maven, Docker (ou um MySQL 8 já rodando).
+O projeto foi entregue com sucesso no TCC e desde então venho evoluindo o repositório para fins de estudos e portfólio. As seguintes melhorias estruturais e arquiteturais foram aplicadas:
 
-**1. Suba um MySQL** (via Docker, mais simples):
+- [x] **Segurança e JWT:** Autenticação com Token JWT (`jjwt`), criptografia de senhas (BCrypt) e filtro Stateless blindando a API REST.
+- [x] **Documentação interativa:** Implantação do Swagger UI / OpenAPI 3 para testes diretos na API.
+- [x] **Containerização (Docker):** Criação de um Dockerfile Multi-stage para empacotamento da aplicação e de um ambiente reprodutível.
+- [x] **Testes Automatizados (JUnit 5):** Cobertura com testes unitários (Mockito) e testes de integração Web (MockMvc).
+- [ ] Deploy na nuvem pública (Railway/Render).
+
+## Como rodar localmente (Docker)
+
+O projeto agora é **100% Dockerizado**, facilitando a execução sem precisar instalar o Java ou o Maven na sua máquina.
+
+Pré-requisito: Ter o Docker instalado.
+
+**1. Suba o banco de dados (MySQL 8):**
 ```bash
 docker run --name revitafisio-mysql \
   -e MYSQL_ROOT_PASSWORD=root \
@@ -61,39 +73,33 @@ docker run --name revitafisio-mysql \
   -d mysql:8.0
 ```
 
-**2. Crie o schema:**
+**2. Crie o schema e popule o banco inicial:**
 ```bash
 docker exec -i revitafisio-mysql mysql -uroot -proot < database/revitafisio_ddl.sql
+docker exec -i revitafisio-mysql mysql -uroot -proot < database/seed_admin.sql
 ```
 
-**3. Configure a aplicação:**
-```bash
-cp revitafisio/src/main/resources/application.properties.example \
-   revitafisio/src/main/resources/application.properties
-# edite usuario/senha do datasource conforme seu ambiente
-```
-
-**4. Rode:**
+**3. Construa a imagem do sistema (Backend + Frontend):**
 ```bash
 cd revitafisio
-./mvnw spring-boot:run
+docker build -t revitafisio-app .
 ```
 
-A aplicação sobe em `http://localhost:8080`. Use `database/seed_admin.sql` para criar um usuário administrador de teste (login por CPF + senha).
+**4. Execute o sistema conectando-se ao banco local (Ubuntu/Linux):**
+```bash
+docker run --network host revitafisio-app
+```
+*(Se estiver usando Windows/Mac, passe o IP do container do banco via flag `-e DB_URL=...`).*
 
-## Status / próximos passos
+A aplicação estará disponível em:
+- **Frontend / Sistema:** `http://localhost:8080`
+- **Documentação da API (Swagger):** `http://localhost:8080/swagger-ui.html`
 
-Projeto de TCC já entregue; este repositório está sendo mantido/organizado como parte do meu portfólio. Melhorias que pretendo aplicar:
-
-- [x] Criptografia de senhas (BCrypt) e segurança Spring Security
-- [x] Autenticação com Token JWT (`jjwt`) e filtro Stateless (`JwtAuthenticationFilter`) blindando a API REST.
-- [x] Testes Automatizados (JUnit 5): 
-  - Testes Unitários puros (`JwtServiceTest`)
-  - Testes Unitários com Mocks (`AuthServiceTest` via Mockito)
-  - Testes de Integração Web (`AgendamentoControllerTest` via MockMvc)
-- [ ] Deploy em ambiente público (Railway/Render) com banco gerenciado
+O login padrão gerado pelo seed é:
+- **CPF:** `12345678901`
+- **Senha:** `admin123`
 
 ## Autor
 
 **Edmar Yan** — Técnico em Informática (ETB, 2025)
-[GitHub](https://github.com/EdmarYan)
+[GitHub](https://github.com/EdmarYan) | [LinkedIn](https://www.linkedin.com/in/edmaryan/)

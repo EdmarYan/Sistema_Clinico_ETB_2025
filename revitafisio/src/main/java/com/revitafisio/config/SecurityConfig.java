@@ -121,7 +121,10 @@ public class SecurityConfig {
                     "/img/**",
                     "/vendor/**",
                     "/landingpage/**",
-                    "/pages/**"             // Todas as páginas, JS, CSS dentro de pages
+                    "/pages/**",             // Todas as páginas, JS, CSS dentro de pages
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
                 ).permitAll()
 
                 // ---- ROTAS PROTEGIDAS (exigem token JWT válido) ----

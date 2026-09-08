@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- 2. VERIFICAÇÃO DE SEGURANÇA ---
     // Se não houver pacienteId, usuário logado ou se o usuário não for um Fisioterapeuta,
     // o acesso é bloqueado e o usuário é redirecionado.
-    if (!pacienteId || !usuarioLogado || !usuarioLogado.tipoUsuario.includes('FISIOTERAPEUTA')) {
+    if (!pacienteId || isNaN(pacienteId) || pacienteId === "undefined" || !usuarioLogado || !usuarioLogado.tipoUsuario.includes('FISIOTERAPEUTA')) {
         alert('Acesso inválido ou não autorizado.');
         window.location.href = '../dashboard/dashboard.html';
         return; // Interrompe a execução do script.

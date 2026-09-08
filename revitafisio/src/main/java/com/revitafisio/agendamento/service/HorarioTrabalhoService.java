@@ -108,11 +108,16 @@ public class HorarioTrabalhoService {
         LocalDate ultimoDiaDoMes = anoMes.atEndOfMonth();
         LocalDate hoje = LocalDate.now();
 
-        // 1. Apaga apenas os horários FUTUROS para evitar perda de histórico
-        LocalDate dataInicioDelecao = hoje.isAfter(primeiroDiaDoMes) ? hoje : primeiroDiaDoMes;
-        horarioDisponivelRepository.deleteByFisioterapeutaIdUsuarioAndDataBetween(
-                idFisioterapeuta, dataInicioDelecao, ultimoDiaDoMes
+        // 1. Busca horários já existentes no mês para não criar duplicados
+        // Em vez de deletar os horários, apenas adicionamos os que estão faltando.
+        List<HorarioDisponivel> horariosExistentes = horarioDisponivelRepository.findByFisioterapeutaIdUsuarioAndDataBetween(
+                idFisioterapeuta, primeiroDiaDoMes, ultimoDiaDoMes
         );
+
+        // Cria um Set (Conjunto) para verificação rápida de existência (Data + HoraInicio)
+        java.util.Set<String> slotsExistentes = horariosExistentes.stream()
+                .map(h -> h.getData().toString() + "T" + h.getHoraInicio().toString())
+                .collect(Collectors.toSet());
 
         // 2. Busca a grade de trabalho
         List<HorarioTrabalho> gradeDeTrabalho = horarioTrabalhoRepository.findByFisioterapeutaIdUsuario(idFisioterapeuta)
@@ -125,7 +130,7 @@ public class HorarioTrabalhoService {
             throw new BusinessRuleException("O fisioterapeuta não possui uma grade de trabalho ativa definida.");
         }
 
-        // 3. Gera apenas slots FUTUROS
+        // 3. Gera apenas slots FUTUROS que ainda não existem
         List<HorarioDisponivel> novosHorarios = new ArrayList<>();
         for (LocalDate dataAtual = primeiroDiaDoMes; !dataAtual.isAfter(ultimoDiaDoMes); dataAtual = dataAtual.plusDays(1)) {
 
@@ -146,22 +151,30 @@ public class HorarioTrabalhoService {
                             continue;
                         }
 
-                        var horarioDisponivel = new HorarioDisponivel();
-                        horarioDisponivel.setFisioterapeuta(fisioterapeuta);
-                        horarioDisponivel.setData(dataAtual);
-                        horarioDisponivel.setHoraInicio(slotInicio);
-                        horarioDisponivel.setHoraFim(slotInicio.plusHours(1));
-                        horarioDisponivel.setDisponivel(true);
+                        // Verifica se o slot já existe no banco de dados para evitar a exceção "Duplicate entry"
+                        String chaveSlot = dataAtual.toString() + "T" + slotInicio.toString();
+                        if (!slotsExistentes.contains(chaveSlot)) {
+                            var horarioDisponivel = new HorarioDisponivel();
+                            horarioDisponivel.setFisioterapeuta(fisioterapeuta);
+                            horarioDisponivel.setData(dataAtual);
+                            horarioDisponivel.setHoraInicio(slotInicio);
+                            horarioDisponivel.setHoraFim(slotInicio.plusHours(1));
+                            horarioDisponivel.setDisponivel(true);
 
-                        novosHorarios.add(horarioDisponivel);
+                            novosHorarios.add(horarioDisponivel);
+                        }
+
                         slotInicio = slotInicio.plusHours(1);
                     }
                 }
             }
         }
 
-        horarioDisponivelRepository.saveAll(novosHorarios);
-        logger.info("Geração finalizada. {} slots futuros criados.", novosHorarios.size());
+        if (!novosHorarios.isEmpty()) {
+            horarioDisponivelRepository.saveAll(novosHorarios);
+        }
+        
+        logger.info("Geração finalizada. {} novos slots futuros criados.", novosHorarios.size());
     }
 
     @Transactional(readOnly = true)

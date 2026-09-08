@@ -183,7 +183,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-primary">Histórico de Evoluções</h6>
-                                    <button class="btn btn-sm btn-light" onclick="carregarEvolucoes()">
+                                    <button class="btn btn-sm btn-light" onclick="carregarEvolucoes(new URLSearchParams(window.location.search).get('pacienteId'))">
                                         <i class="fas fa-sync-alt"></i> Atualizar
                                     </button>
                                 </div>
@@ -219,5 +219,6 @@
 
 <!-- Script da Página -->
 <script src="prontuario.js"></script>
+<script src="../../js/auth-interceptor.js"></script>
 </body>
 </html>

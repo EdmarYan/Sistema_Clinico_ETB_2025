@@ -1,6 +1,5 @@
 package com.revitafisio.agendamento.dto;
 
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -24,10 +23,8 @@ public record CriarAgendamentoRequest(
         Integer idEspecialidade,
 
         @NotNull(message = "A data e hora de início são obrigatórias.")
-        @Future(message = "A data de início do agendamento deve ser no futuro.")
         LocalDateTime dataHoraInicio,
 
         @NotNull(message = "A data e hora de término são obrigatórias.")
-        @Future(message = "A data de término do agendamento deve ser no futuro.")
         LocalDateTime dataHoraFim
 ) {}

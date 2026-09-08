@@ -36,8 +36,10 @@ function inicializarPagina() {
     const pacienteId = urlParams.get('pacienteId');
 
     // Validação básica de segurança
-    if (!pacienteId || isNaN(pacienteId)) {
-        mostrarErro("ID do paciente inválido na URL");
+    if (!pacienteId || isNaN(pacienteId) || pacienteId === "undefined") {
+        mostrarErro("ID do paciente inválido na URL. Redirecionando...", () => {
+            window.location.href = '../dashboard/dashboard.html';
+        });
         return;
     }
 
@@ -455,9 +457,16 @@ async function salvarEvolucao() {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
-        const pacienteId = new URLSearchParams(window.location.search).get('pacienteId');
+        const pacienteIdRaw = new URLSearchParams(window.location.search).get('pacienteId');
+        const pacienteIdNum = parseInt(pacienteIdRaw, 10);
+
+        if (!pacienteIdRaw || isNaN(pacienteIdNum)) {
+            mostrarErro("ID do paciente inválido. Recarregue a página.");
+            return;
+        }
+
         const requestBody = {
-            idPaciente: pacienteId,
+            idPaciente: pacienteIdNum,
             idFisioterapeuta: usuarioLogado.usuarioId,
             descricao: descricao
         };

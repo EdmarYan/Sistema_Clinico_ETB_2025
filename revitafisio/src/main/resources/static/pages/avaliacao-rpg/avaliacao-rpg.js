@@ -15,8 +15,8 @@ const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
 document.addEventListener('DOMContentLoaded', function() {
     // --- 2. VERIFICAÇÃO DE SEGURANÇA ---
     // Protege a página, garantindo que apenas um fisioterapeuta logado
-    // e com um ID de paciente válido possa acessá-la.
-    if (!pacienteId || !usuarioLogado || !usuarioLogado.tipoUsuario.includes('FISIOTERAPEUTA')) {
+    // Validação de segurança idêntica à avaliação de ortopedia
+    if (!pacienteId || isNaN(pacienteId) || pacienteId === "undefined" || !usuarioLogado || !usuarioLogado.tipoUsuario.includes('FISIOTERAPEUTA')) {
         alert('Acesso inválido ou não autorizado.');
         window.location.href = '../dashboard/dashboard.html';
         return;
